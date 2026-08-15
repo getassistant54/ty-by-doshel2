@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ты бы дошёл? — Симулятор клиентского опыта</title>
+
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src  'self' 'unsafe-inline'
+                      https://cdn.tailwindcss.com
+                      https://unpkg.com
+                      https://fonts.googleapis.com;
+          style-src   'self' 'unsafe-inline'
+                      https://fonts.googleapis.com
+                      https://fonts.gstatic.com;
+          font-src    'self'
+                      https://fonts.gstatic.com;
+          img-src     'self' data: https:;
+          connect-src 'self' https:;
+        " />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <script src="./js/notibot-bridge.js"></script>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text)] antialiased select-none">
+  <div id="loading" class="loader-screen">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <div id="app" class="min-h-[100dvh] flex flex-col justify-between max-w-lg mx-auto relative overflow-x-hidden"></div>
+
+  <div id="drawer-root"></div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "interactive-simulator",
+  "version": "1.0.0",
+  "description": "Интерактивный Vibe-симулятор «Ты бы дошёл?»",
+  "type": "module",
+  "scripts": {
+    "audit": "node scripts/audit.js",
+    "start": "npx serve . --listen 3000"
+  }
+}
