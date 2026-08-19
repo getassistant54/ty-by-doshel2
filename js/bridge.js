@@ -15,7 +15,8 @@ export function initBridge(onReady) {
       _state.user = user || {};
       _state.app = app || {};
       _state.colors = app?.colors || null;
-      _applyTheme(_state.colors);
+      // Сохраняем авторскую цветовую палитру симулятора (Codex dark theme),
+      // чтобы сторонние цвета Telegram/бота не ломали контрастность заголовков и кнопок.
 
       if (typeof onReady === 'function') {
         onReady(_state);
@@ -116,14 +117,4 @@ export async function submitToNotibot(payload) {
     errorNotice: 'Запущено в браузере вне Telegram. Для отправки в Notibot откройте ссылку внутри Telegram-бота.',
     data: answers,
   };
-}
-
-function _applyTheme(colors) {
-  if (!colors) return;
-  const r = document.documentElement;
-  if (colors.background) r.style.setProperty('--color-bg', colors.background);
-  if (colors.surface) r.style.setProperty('--color-surface', colors.surface);
-  if (colors.textPrimary) r.style.setProperty('--color-text', colors.textPrimary);
-  if (colors.textSecondary) r.style.setProperty('--color-muted', colors.textSecondary);
-  if (colors.primaryMain) r.style.setProperty('--color-accent', colors.primaryMain);
 }
