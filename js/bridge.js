@@ -2,41 +2,49 @@
  * js/bridge.js — Адаптер Notibot Bridge SDK
  */
 
+import { CONFIG } from './config.js';
+
 let _state = { user: null, app: null, colors: null, isInsideNotibot: false };
 const _listeners = [];
 
 export function initBridge(onReady) {
-  if (!window.notibot) {
-    if (onReady) onReady(_state);
-    return;
+  if (window.notibot?.onUpdate) {
+    window.notibot.onUpdate((user, app) => {
+      _state.user = user;
+      _state.app = app;
+      _state.colors = app?.colors || null;
+      _applyTheme(_state.colors);
+
+      if (typeof onReady === 'function') {
+        onReady(_state);
+        onReady = null;
+      }
+      _listeners.forEach(fn => fn(_state));
+    });
   }
 
   _state.isInsideNotibot = !!(window.parent && window.parent !== window);
 
-  window.notibot.onUpdate((user, app) => {
-    _state.user = user;
-    _state.app = app;
-    _state.colors = app?.colors || null;
-    _applyTheme(_state.colors);
-
-    if (onReady) {
-      onReady(_state);
-      onReady = null;
-    }
-    _listeners.forEach(fn => fn(_state));
-  });
-
-  // Если Notibot не прислал INIT в течение 350мс, стартуем автономно
-  setTimeout(() => {
-    if (onReady) {
-      onReady(_state);
-      onReady = null;
-    }
-  }, 350);
+  if (typeof onReady === 'function') {
+    setTimeout(() => {
+      if (onReady) {
+        onReady(_state);
+        onReady = null;
+      }
+    }, 100);
+  }
 }
 
 export function getBridgeState() {
   return _state;
+}
+
+export function hasIdentifiedNotibotUser() {
+  return Boolean(_state.user?.id);
+}
+
+export function haptic(style = 'light') {
+  hapticImpact(style);
 }
 
 export function hapticImpact(style = 'light') {
@@ -52,7 +60,7 @@ export function hapticSelection() {
 }
 
 export async function submitToNotibot(payload) {
-  const formId = window.NOTIBOT_FORM_ID || null;
+  const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || null;
 
   if (formId && window.notibot && typeof window.notibot.submitForm === 'function') {
     const formattedAnswers = Object.entries(payload).map(([k, v]) => ({
