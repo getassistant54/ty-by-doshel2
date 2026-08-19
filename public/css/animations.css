@@ -1,0 +1,11 @@
+@keyframes screenIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pop { 0% { transform: scale(.8); } 60% { transform: scale(1.14); } 100% { transform: scale(1); } }
+@keyframes drift { 0%, 100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,12px,0); } }
+.screen-enter { animation: screenIn .35s ease both; }
+.metric-pop { animation: pop .35s ease; }
+.ambient { animation: drift 7s ease-in-out infinite; }
+.primary-btn:active, .secondary-btn:active, .option-card:active { transform: scale(.975); }
+.primary-btn, .secondary-btn, .option-card { transition: transform .12s ease, border-color .2s ease, background .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

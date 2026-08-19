@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐙 Hydra AI Test Bench | Тестовый полигон</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .neo-card {
+      background: #1e293b;
+      border: 2px solid #334155;
+      box-shadow: 4px 4px 0px 0px #0f172a;
+    }
+    .neo-btn {
+      transition: all 0.15s ease;
+      border: 2px solid #000;
+      box-shadow: 3px 3px 0px 0px #000;
+    }
+    .neo-btn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px 0px #000;
+    }
+    .neo-btn:active:not(:disabled) {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px 0px #000;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex items-center justify-center">
+
+  <div class="w-full max-w-3xl space-y-6">
+    
+    <!-- Top Bar -->
+    <div class="neo-card rounded-2xl p-6 bg-slate-900/90 border-slate-800 backdrop-blur-md">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-indigo-500/30">
+            🐙
+          </div>
+          <div>
+            <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
+              Hydra AI Test Bench
+              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Live Sandbox</span>
+            </h1>
+            <p class="text-xs text-slate-400 font-medium">Проверка шлюза https://api.hydraai.ru/v1 и выбор нейросетей</p>
+          </div>
+        </div>
+
+        <a href="https://t.me/HydraAI_Store_bot?start=r_3781184" target="_blank" class="neo-btn bg-indigo-500 hover:bg-indigo-400 text-white text-xs font-bold px-4 py-2.5 rounded-xl inline-flex items-center justify-center gap-2 shrink-0 border-indigo-900">
+          <i data-lucide="key" class="w-4 h-4"></i>
+          <span>Получить API-ключ в Telegram</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Playground Form -->
+    <div class="neo-card rounded-2xl p-6 md:p-8 space-y-6 bg-slate-800/80 border-slate-700">
+      
+      <!-- Model Selector -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+          1. Выберите модель нейросети:
+        </label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5" id="model-selector">
+          <button type="button" data-model="deepseek-v4-flash" class="model-option p-3 rounded-xl border-2 border-indigo-500 bg-indigo-950/40 text-left transition-all">
+            <div class="text-xs font-bold text-white flex items-center justify-between">
+              DeepSeek Flash
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            </div>
+            <div class="text-[10px] text-slate-400 mt-1">Ультрабыстрая (Default)</div>
+          </button>
+
+          <button type="button" data-model="gpt-4o-mini" class="model-option p-3 rounded-xl border-2 border-slate-700 bg-slate-900/40 text-left transition-all hover:border-slate-500">
+            <div class="text-xs font-bold text-white">GPT-4o Mini</div>
+            <div class="text-[10px] text-slate-400 mt-1">OpenAI Fast</div>
+          </button>
+
+          <button type="button" data-model="gemini-2.5-flash-lite" class="model-option p-3 rounded-xl border-2 border-slate-700 bg-slate-900/40 text-left transition-all hover:border-slate-500">
+            <div class="text-xs font-bold text-white">Gemini 2.5 Flash</div>
+            <div class="text-[10px] text-slate-400 mt-1">Google AI</div>
+          </button>
+
+          <button type="button" data-model="gpt-4o" class="model-option p-3 rounded-xl border-2 border-slate-700 bg-slate-900/40 text-left transition-all hover:border-slate-500">
+            <div class="text-xs font-bold text-white">GPT-4o</div>
+            <div class="text-[10px] text-slate-400 mt-1">Флагман OpenAI</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- User Payload Prompt -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label for="prompt-input" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+            2. Тестовый запрос (User Prompt / Payload):
+          </label>
+          <button id="fill-preset-btn" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold underline">
+            Заполнить данными симулятора
+          </button>
+        </div>
+        <textarea id="prompt-input" rows="4" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl p-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono transition-colors" placeholder="Введите ваш вопрос или данные ответов пользователя..."></textarea>
+      </div>
+
+      <!-- Action Button -->
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+        <button id="send-btn" class="w-full sm:w-auto neo-btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm px-6 py-3 rounded-xl flex items-center justify-center gap-2 border-emerald-950">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Отправить в Hydra AI</span>
+        </button>
+
+        <a href="/" class="w-full sm:w-auto neo-btn bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs px-4 py-3 rounded-xl flex items-center justify-center gap-2 border-slate-900">
+          <i data-lucide="play" class="w-3.5 h-3.5"></i>
+          <span>Перейти к симулятору</span>
+        </a>
+
+        <div id="status-indicator" class="hidden text-xs font-semibold px-3 py-1.5 rounded-lg"></div>
+      </div>
+
+      <!-- Response Panel -->
+      <div id="response-container" class="hidden space-y-4 pt-4 border-t border-slate-700/60">
+        
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+            Ответ модели:
+          </span>
+          <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+            <span id="credits-tag" class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700"></span>
+            <span id="time-tag" class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700"></span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <div class="text-[10px] font-bold uppercase text-slate-400 mb-1">Спарсенный JSON:</div>
+            <pre id="json-output" class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-emerald-400 overflow-x-auto max-h-64"></pre>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase text-slate-400 mb-1">Сырой ответ (Raw):</div>
+            <pre id="raw-output" class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-slate-300 overflow-x-auto max-h-64"></pre>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Helper Notice -->
+    <div class="text-center text-xs text-slate-500">
+      Перед продакшн-деплоем файл <code class="text-slate-400 bg-slate-800 px-1 py-0.5 rounded">test-ai.html</code> автоматически исключается из Docker сборки.
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let selectedModel = 'deepseek-v4-flash';
+
+    // Model selection buttons
+    const modelButtons = document.querySelectorAll('.model-option');
+    modelButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        modelButtons.forEach(b => {
+          b.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+          b.classList.add('border-slate-700', 'bg-slate-900/40');
+        });
+        btn.classList.remove('border-slate-700', 'bg-slate-900/40');
+        btn.classList.add('border-indigo-500', 'bg-indigo-950/40');
+        selectedModel = btn.dataset.model;
+      });
+    });
+
+    // Preset button
+    const presetBtn = document.getElementById('fill-preset-btn');
+    const promptInput = document.getElementById('prompt-input');
+    presetBtn.addEventListener('click', () => {
+      promptInput.value = JSON.stringify({
+        project: "Интерактивный симулятор «Ты бы дошёл?»",
+        answers: [
+          { question: "Готовность к рискам", choice: "Высокая (ставлю на масштабирование)" },
+          { question: "Управление ресурсами", choice: "Контролирую каждый рубль" },
+          { question: "Работа в стрессе", choice: "Фокусируюсь на быстром тестировании гипотез" }
+        ],
+        finalScore: 85
+      }, null, 2);
+    });
+
+    // Send action
+    const sendBtn = document.getElementById('send-btn');
+    const statusIndicator = document.getElementById('status-indicator');
+    const responseContainer = document.getElementById('response-container');
+    const jsonOutput = document.getElementById('json-output');
+    const rawOutput = document.getElementById('raw-output');
+    const creditsTag = document.getElementById('credits-tag');
+    const timeTag = document.getElementById('time-tag');
+
+    sendBtn.addEventListener('click', async () => {
+      const payload = promptInput.value.trim() || 'Привет! Проведи краткий анализ готовности запустить стартап.';
+      
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = `<span class="animate-spin mr-2">⏳</span> Генерация ответа...`;
+      statusIndicator.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30';
+      statusIndicator.textContent = `Запрос к ${selectedModel}...`;
+      statusIndicator.classList.remove('hidden');
+
+      const startTime = performance.now();
+
+      try {
+        const response = await fetch('/api/ai/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userPayload: payload,
+            model: selectedModel,
+            notibotUserId: 'developer_test_user'
+          })
+        });
+
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+        const resData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(resData.error || `HTTP ${response.status}`);
+        }
+
+        statusIndicator.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        statusIndicator.textContent = `✅ Успешно (${elapsed}s)`;
+
+        responseContainer.classList.remove('hidden');
+        jsonOutput.textContent = JSON.stringify(resData.data, null, 2);
+        rawOutput.textContent = resData.raw || JSON.stringify(resData.data);
+        creditsTag.textContent = `Осталось кредитов: ${resData.creditsLeft ?? 'N/A'}`;
+        timeTag.textContent = `Время: ${elapsed}s | Модель: ${resData.modelUsed}`;
+
+      } catch (err) {
+        statusIndicator.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        statusIndicator.textContent = `❌ Ошибка: ${err.message}`;
+        responseContainer.classList.remove('hidden');
+        jsonOutput.textContent = JSON.stringify({ error: err.message }, null, 2);
+        rawOutput.textContent = err.message;
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>Отправить в Hydra AI</span>`;
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

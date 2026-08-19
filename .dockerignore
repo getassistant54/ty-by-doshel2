@@ -1,0 +1,9 @@
+.git
+.gemini
+node_modules
+README.md
+Dockerfile
+*.zip
+*.tar.gz
+public/test-ai.html
+.env
