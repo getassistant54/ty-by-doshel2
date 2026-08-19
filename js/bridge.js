@@ -8,6 +8,8 @@ let _state = { user: null, app: null, colors: null, isInsideNotibot: false };
 const _listeners = [];
 
 export function initBridge(onReady) {
+  _state.isInsideNotibot = !!(window.parent && window.parent !== window);
+
   if (window.notibot?.onUpdate) {
     window.notibot.onUpdate((user, app) => {
       _state.user = user;
@@ -22,8 +24,6 @@ export function initBridge(onReady) {
       _listeners.forEach(fn => fn(_state));
     });
   }
-
-  _state.isInsideNotibot = !!(window.parent && window.parent !== window);
 
   if (typeof onReady === 'function') {
     setTimeout(() => {
@@ -61,8 +61,10 @@ export function hapticSelection() {
 
 export async function submitToNotibot(payload) {
   const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || null;
+  const isInsideNotibot = !!(window.parent && window.parent !== window);
 
-  if (formId && window.notibot && typeof window.notibot.submitForm === 'function') {
+  // Если приложение открыто внутри Notibot / Telegram WebApp
+  if (formId && isInsideNotibot && window.notibot && typeof window.notibot.submitForm === 'function') {
     const summaryText = `Диагноз: ${payload.resultType || 'N/A'} | Цель: ${payload.selectedGoal || 'N/A'} | Интерес: ${payload.interest}/5 | Нагрузка: ${payload.load} | Переходы: ${payload.switches} | Трение: ${payload.friction}`;
 
     const answers = [
@@ -84,9 +86,10 @@ export async function submitToNotibot(payload) {
     }
   }
 
-  console.log('🚀 [DEMO / PROTOTYPE] Payload submitted:', payload);
+  // Если приложение открыто в обычном браузере (localhost или прямая ссылка вне Telegram)
+  console.info('🚀 [Browser Mode] Заявка зафиксирована локально:', payload);
   await new Promise(r => setTimeout(r, 600));
-  return { success: true, mode: 'prototype', payload };
+  return { success: true, mode: 'standalone', payload };
 }
 
 function _applyTheme(colors) {

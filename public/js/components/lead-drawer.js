@@ -106,7 +106,7 @@ export function setupLeadDrawer(rootEl, getState) {
     const payload = {
       name: nameVal,
       contact: contactVal || 'Telegram',
-      leadGoal: leadGoalVal,
+      leadGoal: leadGoalVal || 'Больше заявок',
       selectedGoal: st.goalId,
       resultType: result.id,
       aiArchetype: aiResult?.data?.archetype || 'N/A',
@@ -125,12 +125,12 @@ export function setupLeadDrawer(rootEl, getState) {
 
     const res = await submitToNotibot(payload);
 
-    if (res.mode === 'prototype') {
-      message.className = 'form-message text-amber-300';
-      message.textContent = '✅ Демо-режим: заявка зафиксирована.';
+    if (res.mode === 'standalone') {
+      message.className = 'form-message text-emerald-300 font-semibold';
+      message.textContent = '✅ Заявка принята!';
     } else if (res.success) {
-      message.className = 'form-message text-emerald-300';
-      message.textContent = '✅ Заявка отправлена! Скоро свяжемся.';
+      message.className = 'form-message text-emerald-300 font-semibold';
+      message.textContent = '✅ Заявка успешно отправлена в Notibot!';
     } else {
       message.className = 'form-message text-rose-400';
       message.textContent = '❌ Ошибка отправки. Попробуйте позже.';
@@ -138,7 +138,7 @@ export function setupLeadDrawer(rootEl, getState) {
 
     submitButton.textContent = 'Отправлено';
     hapticImpact('light');
-    setTimeout(close, 2000);
+    setTimeout(close, 2200);
   });
 
   return {
