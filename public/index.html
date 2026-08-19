@@ -9,14 +9,72 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="./css/styles.css?v=2.1">
-  <link rel="stylesheet" href="./css/components.css?v=2.1">
-  <link rel="stylesheet" href="./css/animations.css?v=2.1">
+  <link rel="stylesheet" href="./css/styles.css?v=3.0">
+  <link rel="stylesheet" href="./css/components.css?v=3.0">
+  <link rel="stylesheet" href="./css/animations.css?v=3.0">
+
+  <!-- Гарантированные инлайн-стили темы Codex (защита от кэша и перебивания темой Telegram) -->
+  <style>
+    :root {
+      --color-bg: #10121a !important;
+      --color-bg-soft: #171a25 !important;
+      --color-text: #f8f7f3 !important;
+      --color-muted: #a7a8b3 !important;
+      --color-accent: #ff6b4a !important;
+      --color-accent-2: #ffc857 !important;
+      --color-positive: #79d7a7 !important;
+      --color-surface: rgba(255, 255, 255, 0.07) !important;
+      --color-surface-strong: rgba(255, 255, 255, 0.11) !important;
+      --color-border: rgba(255, 255, 255, 0.12) !important;
+    }
+    html, body {
+      background-color: #10121a !important;
+      background: radial-gradient(circle at 20% 0%, rgba(255, 107, 74, 0.15), transparent 30rem), linear-gradient(180deg, #10121a 0%, #12141d 100%) !important;
+      color: #f8f7f3 !important;
+    }
+    .primary-btn {
+      background-color: #ff6b4a !important;
+      background: linear-gradient(135deg, #ff7a59, #ff5733) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 24px rgba(255, 107, 74, 0.38) !important;
+    }
+    .accent {
+      color: #ff6b4a !important;
+    }
+    .eyebrow {
+      color: #ffc857 !important;
+    }
+    .route-dot, .route-dot.active {
+      border-color: #ff6b4a !important;
+    }
+    .route-dot.active {
+      background: #ff6b4a !important;
+    }
+    .display-title, .screen-title {
+      color: #f8f7f3 !important;
+    }
+    .option-card {
+      color: #f8f7f3 !important;
+    }
+    .option-card:hover, .option-card.option-selected {
+      border-color: #ff6b4a !important;
+    }
+    .option-card.option-selected {
+      background: rgba(255, 107, 74, 0.18) !important;
+    }
+    .option-icon {
+      background: rgba(255, 200, 87, 0.12) !important;
+      color: #ffc857 !important;
+    }
+    .option-copy {
+      color: #f8f7f3 !important;
+    }
+  </style>
   
   <!-- Notibot Bridge SDK -->
-  <script src="./js/notibot-bridge.js?v=2.1"></script>
+  <script src="./js/notibot-bridge.js?v=3.0"></script>
   <!-- Lucide Icons -->
-  <script src="./js/vendor-lucide.js?v=2.1"></script>
+  <script src="./js/vendor-lucide.js?v=3.0"></script>
 </head>
 <body>
   <div class="ambient ambient-one" aria-hidden="true"></div>
@@ -24,6 +82,6 @@
 
   <div id="app"></div>
 
-  <script type="module" src="./js/app.js?v=2.1"></script>
+  <script type="module" src="./js/app.js?v=3.0"></script>
 </body>
 </html>
