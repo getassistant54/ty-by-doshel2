@@ -60,23 +60,21 @@ export function hapticSelection() {
 }
 
 export async function submitToNotibot(payload) {
-  const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || null;
+  const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || '5o9Qgbk90iwL4vryUdjyGW';
   const isInsideNotibot = !!(window.parent && window.parent !== window);
 
-  // Если приложение открыто внутри Notibot / Telegram WebApp
-  if (formId && isInsideNotibot && window.notibot && typeof window.notibot.submitForm === 'function') {
-    const summaryText = `Диагноз: ${payload.resultType || 'N/A'} | Цель: ${payload.selectedGoal || 'N/A'} | Интерес: ${payload.interest}/5 | Нагрузка: ${payload.load} | Переходы: ${payload.switches} | Трение: ${payload.friction}`;
+  // Формируем краткий и понятный текст для поля "Результат диагностики"
+  const summaryText = `Диагноз: ${payload.resultType || 'N/A'} | Цель: ${payload.selectedGoal || 'N/A'} | Интерес: ${payload.interest ?? 5}/5 | Нагрузка: ${payload.load ?? 0} | Переходы: ${payload.switches ?? 0} | Трение: ${payload.friction ?? 0}`;
 
-    const answers = [
-      { title: 'Имя', answers: payload.name ? [payload.name] : [] },
-      { title: 'Куда написать', answers: payload.contact ? [payload.contact] : [] },
-      { title: 'Контакт', answers: payload.contact ? [payload.contact] : [] },
-      { title: 'Что сейчас важнее всего', answers: payload.leadGoal ? [payload.leadGoal] : [] },
-      { title: 'Цель разбора', answers: payload.leadGoal ? [payload.leadGoal] : [] },
-      { title: 'Результат диагностики', answers: [summaryText] },
-      { title: 'Детали', answers: [JSON.stringify(payload)] },
-    ];
+  // Точные 4 вопроса из схемы формы Notibot (formId: 5o9Qgbk90iwL4vryUdjyGW)
+  const answers = [
+    { title: 'Имя', answers: [payload.name || 'Клиент'] },
+    { title: 'Куда написать', answers: [payload.contact || 'Telegram'] },
+    { title: 'Что сейчас важнее всего', answers: [payload.leadGoal || 'Больше заявок'] },
+    { title: 'Результат диагностики', answers: [summaryText] },
+  ];
 
+  if (isInsideNotibot && window.notibot && typeof window.notibot.submitForm === 'function') {
     try {
       const res = await window.notibot.submitForm(formId, answers);
       return { success: true, mode: 'real', data: res };
@@ -86,10 +84,10 @@ export async function submitToNotibot(payload) {
     }
   }
 
-  // Если приложение открыто в обычном браузере (localhost или прямая ссылка вне Telegram)
-  console.info('🚀 [Browser Mode] Заявка зафиксирована локально:', payload);
+  // Если симулятор запущен в обычном браузере на ПК вне фрейма Telegram
+  console.info('🚀 [Browser Mode] Заявка зафиксирована со схемой Notibot:', { formId, answers, payload });
   await new Promise(r => setTimeout(r, 600));
-  return { success: true, mode: 'standalone', payload };
+  return { success: true, mode: 'standalone', answers };
 }
 
 function _applyTheme(colors) {

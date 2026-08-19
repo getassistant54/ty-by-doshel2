@@ -1,0 +1,30 @@
+{
+  "formId": "5o9Qgbk90iwL4vryUdjyGW",
+  "formName": "Форма Ты бы дошел",
+  "formType": "regular_form",
+  "additionalText": "",
+  "redirect": null,
+  "pointsForFilling": 0,
+  "questions": [
+    {
+      "title": "Имя",
+      "type": "text",
+      "required": true
+    },
+    {
+      "title": "Куда написать",
+      "type": "text",
+      "required": true
+    },
+    {
+      "title": "Что сейчас важнее всего",
+      "type": "text",
+      "required": true
+    },
+    {
+      "title": "Результат диагностики",
+      "type": "text",
+      "required": true
+    }
+  ]
+}
