@@ -1,5 +1,5 @@
 /**
- * js/bridge.js — Адаптер Notibot Bridge SDK
+ * js/bridge.js — Адаптер Notibot Bridge SDK (по стандарту vibe-html-kit)
  */
 
 import { CONFIG } from './config.js';
@@ -12,8 +12,8 @@ export function initBridge(onReady) {
 
   if (window.notibot?.onUpdate) {
     window.notibot.onUpdate((user, app) => {
-      _state.user = user;
-      _state.app = app;
+      _state.user = user || {};
+      _state.app = app || {};
       _state.colors = app?.colors || null;
       _applyTheme(_state.colors);
 
@@ -21,17 +21,18 @@ export function initBridge(onReady) {
         onReady(_state);
         onReady = null;
       }
-      _listeners.forEach(fn => fn(_state));
+      _listeners.forEach((fn) => fn(_state));
     });
   }
 
+  // Резервный таймер инициализации для автономного запуска
   if (typeof onReady === 'function') {
     setTimeout(() => {
       if (onReady) {
         onReady(_state);
         onReady = null;
       }
-    }, 100);
+    }, 150);
   }
 }
 
@@ -59,35 +60,62 @@ export function hapticSelection() {
   }
 }
 
+/**
+ * Отправка формы в Notibot в строгом соответствии с SDK-reference
+ * @param {Object} payload
+ * @returns {Promise<{success: boolean, mode: string, data?: any, error?: any}>}
+ */
 export async function submitToNotibot(payload) {
   const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || '5o9Qgbk90iwL4vryUdjyGW';
   const isInsideNotibot = !!(window.parent && window.parent !== window);
 
-  // Формируем краткий и понятный текст для поля "Результат диагностики"
   const summaryText = `Диагноз: ${payload.resultType || 'N/A'} | Цель: ${payload.selectedGoal || 'N/A'} | Интерес: ${payload.interest ?? 5}/5 | Нагрузка: ${payload.load ?? 0} | Переходы: ${payload.switches ?? 0} | Трение: ${payload.friction ?? 0}`;
 
-  // Точные 4 вопроса из схемы формы Notibot (formId: 5o9Qgbk90iwL4vryUdjyGW)
+  // Строгое сопоставление вопросов по схеме формы Notibot (formId: 5o9Qgbk90iwL4vryUdjyGW)
   const answers = [
-    { title: 'Имя', answers: [payload.name || 'Клиент'] },
-    { title: 'Куда написать', answers: [payload.contact || 'Telegram'] },
-    { title: 'Что сейчас важнее всего', answers: [payload.leadGoal || 'Больше заявок'] },
-    { title: 'Результат диагностики', answers: [summaryText] },
+    {
+      title: 'Имя',
+      answers: payload.name && payload.name.trim() ? [payload.name.trim()] : [],
+    },
+    {
+      title: 'Куда написать',
+      answers: payload.contact && payload.contact.trim() ? [payload.contact.trim()] : (_state.user?.id ? [`tg_id: ${_state.user.id}`] : ['Telegram']),
+    },
+    {
+      title: 'Что сейчас важнее всего',
+      answers: payload.leadGoal && payload.leadGoal.trim() ? [payload.leadGoal.trim()] : ['Больше заявок'],
+    },
+    {
+      title: 'Результат диагностики',
+      answers: [summaryText],
+    },
   ];
 
+  // 1. Если симулятор открыт внутри Telegram / Notibot фрейма
   if (isInsideNotibot && window.notibot && typeof window.notibot.submitForm === 'function') {
     try {
-      const res = await window.notibot.submitForm(formId, answers);
-      return { success: true, mode: 'real', data: res };
-    } catch (err) {
-      console.error('Notibot submit error:', err);
-      return { success: false, mode: 'real', error: err };
+      const result = await window.notibot.submitForm(formId, answers);
+      return { success: true, mode: 'real', data: result };
+    } catch (error) {
+      console.error('Notibot submit error:', error);
+      return {
+        success: false,
+        mode: 'real',
+        error: error.message || 'Ошибка отправки формы в Notibot',
+        code: error.code,
+      };
     }
   }
 
-  // Если симулятор запущен в обычном браузере на ПК вне фрейма Telegram
-  console.info('🚀 [Browser Mode] Заявка зафиксирована со схемой Notibot:', { formId, answers, payload });
-  await new Promise(r => setTimeout(r, 600));
-  return { success: true, mode: 'standalone', answers };
+  // 2. Если симулятор открыт в браузере вне Telegram
+  console.info('🚀 [Browser Standalone] Форма готова. Данные для отправки:', { formId, answers });
+  await new Promise((r) => setTimeout(r, 600));
+  return {
+    success: true,
+    mode: 'standalone',
+    errorNotice: 'Запущено в браузере вне Telegram. Для отправки в Notibot откройте ссылку внутри Telegram-бота.',
+    data: answers,
+  };
 }
 
 function _applyTheme(colors) {

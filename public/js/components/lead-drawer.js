@@ -101,16 +101,12 @@ export function setupLeadDrawer(rootEl, getState) {
       return;
     }
 
-    const aiResult = (await import('../ai-handler.js')).getCachedAiResult();
-
     const payload = {
       name: nameVal,
       contact: contactVal || 'Telegram',
       leadGoal: leadGoalVal || 'Больше заявок',
       selectedGoal: st.goalId,
-      resultType: result.id,
-      aiArchetype: aiResult?.data?.archetype || 'N/A',
-      aiAnalysis: aiResult?.data?.analysis || 'N/A',
+      resultType: result.title || result.id,
       interest: metrics.interest,
       load: metrics.load,
       switches: metrics.switches,
@@ -125,20 +121,24 @@ export function setupLeadDrawer(rootEl, getState) {
 
     const res = await submitToNotibot(payload);
 
-    if (res.mode === 'standalone') {
-      message.className = 'form-message text-emerald-300 font-semibold';
-      message.textContent = '✅ Заявка принята!';
-    } else if (res.success) {
+    if (res.mode === 'real' && res.success) {
       message.className = 'form-message text-emerald-300 font-semibold';
       message.textContent = '✅ Заявка успешно отправлена в Notibot!';
+      submitButton.textContent = 'Отправлено';
+      hapticImpact('light');
+      setTimeout(close, 2200);
+    } else if (res.mode === 'standalone') {
+      message.className = 'form-message text-emerald-300 font-semibold';
+      message.textContent = '✅ Заявка принята! (в Telegram отправляется в бота)';
+      submitButton.textContent = 'Отправлено';
+      hapticImpact('light');
+      setTimeout(close, 2200);
     } else {
       message.className = 'form-message text-rose-400';
-      message.textContent = '❌ Ошибка отправки. Попробуйте позже.';
+      message.textContent = `❌ Ошибка: ${res.error || 'Не удалось отправить форму'}`;
+      submitButton.disabled = false;
+      submitButton.textContent = 'Попробовать снова';
     }
-
-    submitButton.textContent = 'Отправлено';
-    hapticImpact('light');
-    setTimeout(close, 2200);
   });
 
   return {
