@@ -18,6 +18,7 @@ html {
   min-height: 100%;
   background: var(--color-bg);
   overflow-x: hidden;
+  font-size: 15px;
 }
 
 body {
@@ -42,10 +43,10 @@ button { -webkit-tap-highlight-color: transparent; }
 }
 
 .app-shell {
-  width: min(100%, 34rem);
+  width: min(100%, 32rem);
   min-height: 100dvh;
   margin: 0 auto;
-  padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+  padding: max(0.75rem, env(safe-area-inset-top)) 0.85rem max(1rem, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
 }
@@ -55,42 +56,47 @@ button { -webkit-tap-highlight-color: transparent; }
 .screen-bottom { justify-content: flex-end; }
 
 .eyebrow {
-  color: var(--color-accent-2);
-  font-size: .72rem;
+  color: var(--color-accent-2) !important;
+  font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: .14em;
+  letter-spacing: .12em;
   text-transform: uppercase;
 }
 
 .display-title {
-  margin: .7rem 0 0;
-  font-size: clamp(2.7rem, 13vw, 4.7rem);
-  line-height: .94;
-  letter-spacing: -.065em;
+  margin: 0.4rem 0 0;
+  font-size: clamp(2.2rem, 10vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: -.05em;
   font-weight: 800;
+  color: var(--color-text) !important;
 }
 
 .screen-title {
-  margin: .65rem 0 0;
-  font-size: clamp(2rem, 9vw, 3.2rem);
-  line-height: 1.03;
-  letter-spacing: -.05em;
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.4rem, 6vw, 1.95rem);
+  line-height: 1.12;
+  letter-spacing: -.04em;
   font-weight: 800;
+  color: var(--color-text) !important;
 }
 
-.lead-text { color: var(--color-muted); font-size: 1rem; line-height: 1.65; }
-.muted { color: var(--color-muted); }
-.accent { color: var(--color-accent); }
+h1, h2, h3 { color: var(--color-text) !important; }
+p { color: var(--color-text); }
+
+.lead-text { color: var(--color-muted) !important; font-size: 0.85rem; line-height: 1.45; }
+.muted { color: var(--color-muted) !important; }
+.accent { color: var(--color-accent) !important; }
 
 .ambient {
   position: fixed;
-  width: 18rem;
-  height: 18rem;
+  width: 16rem;
+  height: 16rem;
   border-radius: 999px;
   filter: blur(80px);
   pointer-events: none;
   opacity: .18;
   z-index: 0;
 }
-.ambient-one { top: -8rem; right: -8rem; background: var(--color-accent); }
-.ambient-two { bottom: -10rem; left: -9rem; background: #5865f2; }
+.ambient-one { top: -6rem; right: -6rem; background: var(--color-accent); }
+.ambient-two { bottom: -8rem; left: -7rem; background: #5865f2; }

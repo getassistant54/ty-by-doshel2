@@ -22,7 +22,7 @@ export function renderSceneScreen({ scene, metrics, index, total, selected, goal
   const copy = getSceneCopy(scene, currentGoal);
   const options = (scene.options || []).map((option) => `
     <button class="option-card scene-option-btn ${selected === option.id ? 'option-selected' : ''}" data-option-id="${option.id}" data-option="${option.id}" aria-pressed="${selected === option.id}">
-      <span class="option-icon"><i data-lucide="${option.icon || 'circle'}" class="w-5 h-5"></i></span>
+      <span class="option-icon"><i data-lucide="${option.icon || 'circle'}" class="w-4 h-4"></i></span>
       <span class="option-copy">${option.label || option.text}</span>
     </button>`).join('');
 
@@ -31,8 +31,8 @@ export function renderSceneScreen({ scene, metrics, index, total, selected, goal
     ${renderHud(metrics)}
     <div class="eyebrow">${scene.kicker || 'Шаг ' + ((index ?? 0) + 1)}</div>
     <h1 class="screen-title">${copy.title}</h1>
-    <p class="lead-text mt-3">${copy.text}</p>
-    <h2 class="text-base font-bold mt-7">${copy.question}</h2>
+    <p class="lead-text mt-1">${copy.text}</p>
+    <h2 class="text-xs font-bold uppercase tracking-wider text-muted mt-3 mb-1">${copy.question}</h2>
     <div class="option-list">${options}</div>
     <div id="metric-deltas" class="metric-deltas" aria-live="polite"></div>
     <div id="reaction-text" class="reaction" role="status"></div>
