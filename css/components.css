@@ -80,7 +80,36 @@
 .drawer-visible .drawer-backdrop { opacity: 1; }
 .drawer-visible .drawer-panel { transform: translateY(0); }
 .drawer-handle { width: 3rem; height: .28rem; margin: 0 auto 1.2rem; border-radius: 99px; background: var(--color-border); }
-.field { width: 100%; min-height: 3.25rem; margin-top: .5rem; padding: .8rem .9rem; border: 1px solid var(--color-border); border-radius: .9rem; outline: none; color: var(--color-text); background: rgba(255,255,255,.055); }
+.field {
+  width: 100%;
+  min-height: 3.25rem;
+  margin-top: .5rem;
+  padding: .8rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: .9rem;
+  outline: none;
+  color: var(--color-text);
+  background: rgba(255,255,255,.055);
+  transition: border-color .2s ease;
+}
 .field:focus { border-color: var(--color-accent); }
+.field::placeholder { color: rgba(255, 255, 255, 0.35); }
+
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a7a8b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.1rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+select.field option {
+  background-color: #171a25;
+  color: #f8f7f3;
+  padding: 0.6rem;
+}
+
 .field-label { display: block; margin-top: 1rem; color: var(--color-muted); font-size: .75rem; font-weight: 700; }
 .form-message { min-height: 1.4rem; margin-top: .8rem; font-size: .78rem; }
