@@ -1,43 +1,54 @@
-import { CONFIG } from './config.js';
-import { initIcons, resetScroll } from './utils.js';
-import { getState, updateState, saveAnswer, saveAlternateAnswer, resetState } from './state.js';
-import { SCENES, getOption } from './data/scenes.js';
-import { getGoal } from './data/goals.js';
-import { calculateMetrics, getRoute, getRecovery } from './scoring.js';
-import { determineResult } from './results.js';
-import { getPersonalInsight, getRecoveryInsight, getPersonalTips } from './insights.js';
-import { buildAlternateRoute, calculateFullAlternateMetrics, getComparison } from './alternate.js';
-import { initBridge, hapticImpact, hapticSelection, hasIdentifiedNotibotUser } from './bridge.js';
-import { showChoiceFeedback } from './interaction.js';
-import { advanceMainRoute, advanceAlternateRoute, goBack } from './navigation.js';
+/**
+ * app.js — Главный контроллер интерактивного симулятора
+ */
 
-import { renderHeroScreen } from './components/hero-screen.js';
-import { renderGoalScreen } from './components/goal-screen.js';
-import { renderSceneScreen } from './components/scene-screen.js';
-import { renderPauseScreen } from './components/pause-modal.js';
-import { renderResultScreen } from './components/result-screen.js';
-import { renderAltScreen, renderAlternateIntro, renderNoAlternateScreen } from './components/alt-screen.js';
-import { renderCompareScreen } from './components/compare-screen.js';
-import { renderServiceScreen } from './components/service-screen.js';
-import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js';
+import { renderHeroScreen } from './components/hero-screen.js?v=3.5';
+import { renderGoalScreen } from './components/goal-screen.js?v=3.5';
+import { renderSceneScreen } from './components/scene-screen.js?v=3.5';
+import { renderPauseScreen } from './components/pause-modal.js?v=3.5';
+import { renderResultScreen } from './components/result-screen.js?v=3.5';
+import { renderAlternateIntro, renderNoAlternateScreen, renderAltScreen } from './components/alt-screen.js?v=3.5';
+import { renderCompareScreen } from './components/compare-screen.js?v=3.5';
+import { renderServiceScreen } from './components/service-screen.js?v=3.5';
+import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js?v=3.5';
+
+import { GOALS, getGoal } from './data/goals.js?v=3.5';
+import { SCENES, getOption, getRoute } from './data/scenes.js?v=3.5';
+import { calculateMetrics } from './scoring.js?v=3.5';
+import { determineResult } from './results.js?v=3.5';
+import { buildAlternateRoute, calculateFullAlternateMetrics } from './alternate.js?v=3.5';
+import { getComparison } from './alternate.js?v=3.5';
+import { getPersonalInsight, getRecoveryInsight, getPersonalTips } from './insights.js?v=3.5';
+import { getRecovery } from './scoring.js?v=3.5';
+import { showChoiceFeedback } from './interaction.js?v=3.5';
+import { advanceMainRoute, advanceAlternateRoute, goBack } from './navigation.js?v=3.5';
+import { initIcons, resetScroll } from './utils.js?v=3.5';
+import { CONFIG } from './config.js?v=3.5';
+import { getState, setState, updateState, resetState, saveAnswer, saveAlternateAnswer } from './state.js?v=3.5';
+import { initBridge, hapticImpact } from './bridge.js?v=3.5';
 
 const app = document.getElementById('app');
-const drawerRoot = document.getElementById('drawer-root');
-let drawerApi;
+let drawerRoot = null;
+let drawerApi = null;
 let isTransitioning = false;
+
+if (!document.getElementById('drawer-root')) {
+  drawerRoot = document.createElement('div');
+  drawerRoot.id = 'drawer-root';
+  document.body.appendChild(drawerRoot);
+} else {
+  drawerRoot = document.getElementById('drawer-root');
+}
 
 export function render() {
   const state = getState();
-  const metrics = calculateMetrics(state.answers);
   const goal = getGoal(state.goalId);
+  const metrics = calculateMetrics(state.answers);
   const alternate = buildAlternateRoute(state.answers);
 
-  if (['alternate-intro', 'alternate', 'comparison', 'alt_scene', 'compare'].includes(state.view) && !alternate.length) {
-    updateState({ view: 'alternate-empty', alternateIndex: 0, alternateAnswers: {} });
-    return render();
-  }
-  if ((state.view === 'alternate' || state.view === 'alt_scene') && state.alternateIndex >= alternate.length) {
-    updateState({ alternateIndex: Math.max(0, alternate.length - 1) });
+  if (state.view === 'play' && state.sceneIndex === 3 && !state.answers['pause-check']) {
+    saveAnswer('pause-check', 'done');
+    updateState({ view: 'pause' });
     return render();
   }
 
@@ -76,7 +87,6 @@ export function render() {
     }),
     pause: renderPauseScreen,
     result: () => {
-      // Запуск фонового ИИ-анализа (если есть сервер/API)
       import('./ai-handler.js').then(({ getCachedAiResult, sendToAi }) => {
         if (!getCachedAiResult()) {
           const payload = {
