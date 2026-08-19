@@ -12,11 +12,7 @@ export function attachEventListeners({ allScenes, renderApp, drawer }) {
 
   document.getElementById('hud-back-btn')?.addEventListener('click', () => {
     const prev = popHistory();
-    if (prev) {
-      setState(prev);
-      hapticSelection();
-      renderApp();
-    }
+    if (prev) { setState(prev); hapticSelection(); renderApp(); }
   });
 
   document.getElementById('start-game-btn')?.addEventListener('click', () => {
@@ -53,22 +49,13 @@ export function attachEventListeners({ allScenes, renderApp, drawer }) {
   document.getElementById('pause-later-btn')?.addEventListener('click', () => {
     document.getElementById('pause-reaction')?.classList.remove('hidden');
     hapticImpact('medium');
-    setTimeout(() => {
-      setState({ view: 'scene', pauseSeen: true });
-      renderApp();
-    }, 1400);
+    setTimeout(() => { setState({ view: 'scene', pauseSeen: true }); renderApp(); }, 1400);
   });
 
   document.getElementById('try-alt-route-btn')?.addEventListener('click', () => {
-    pushHistory({ view: 'result' });
-    setState({ view: 'alt_scene', altSceneIndex: 0, altAnswers: {} });
-    hapticImpact('medium');
-    renderApp();
+    pushHistory({ view: 'result' }); setState({ view: 'alt_scene', altSceneIndex: 0, altAnswers: {} }); hapticImpact('medium'); renderApp();
   });
-  document.getElementById('restart-game-btn')?.addEventListener('click', () => {
-    resetGame();
-    renderApp();
-  });
+  document.getElementById('restart-game-btn')?.addEventListener('click', () => { resetGame(); renderApp(); });
 
   document.querySelectorAll('.alt-option-btn').forEach(btn => {
     btn.addEventListener('click', () => handleAltOption(btn.dataset.altOptionId, renderApp));
@@ -86,10 +73,7 @@ export function attachEventListeners({ allScenes, renderApp, drawer }) {
   });
 
   document.getElementById('open-lead-drawer-btn')?.addEventListener('click', () => drawer?.open());
-  document.getElementById('service-restart-btn')?.addEventListener('click', () => {
-    resetGame();
-    renderApp();
-  });
+  document.getElementById('service-restart-btn')?.addEventListener('click', () => { resetGame(); renderApp(); });
 }
 
 function handleSceneOption(optId, allScenes, renderApp) {
@@ -106,10 +90,7 @@ function handleSceneOption(optId, allScenes, renderApp) {
 
   const reactEl = document.getElementById('reaction-text');
   const deltaContainer = document.getElementById('metric-deltas');
-  if (reactEl) {
-    reactEl.textContent = option.reaction || '';
-    reactEl.style.opacity = '1';
-  }
+  if (reactEl) { reactEl.textContent = option.reaction || ''; reactEl.style.opacity = '1'; }
   if (deltaContainer && option.effects) {
     deltaContainer.innerHTML = Object.entries(option.effects)
       .filter(([_, v]) => v !== 0)
@@ -152,10 +133,7 @@ function handleAltOption(optId, renderApp) {
     saveAltAnswer(ep.sceneId, option);
     hapticImpact('light');
     const reactEl = document.getElementById('alt-reaction-text');
-    if (reactEl) {
-      reactEl.textContent = option.reaction || '';
-      reactEl.style.opacity = '1';
-    }
+    if (reactEl) { reactEl.textContent = option.reaction || ''; reactEl.style.opacity = '1'; }
   }
 
   setTimeout(() => {

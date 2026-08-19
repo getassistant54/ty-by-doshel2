@@ -71,78 +71,36 @@ export const RESULT_TYPES = {
 };
 
 export function determineResult(metrics, answers = {}) {
-  // Условие для «Почти бесшовно»
   const isGood = metrics.load <= 1 && metrics.switches <= 1 && metrics.friction <= 1 && metrics.manual === 0 && metrics.interest >= 4;
   if (isGood) return RESULT_TYPES.good;
 
-  // Проверяем доминирующий поиск
   const touchOpt = answers.first_touch?.id;
   const infoOpt = answers.offer_info?.id;
   const isSearchHeavy = (touchOpt === 'search-channel') || (infoOpt === 'read-posts' || infoOpt === 'search-price');
 
-  if (metrics.manual >= 2 || (metrics.manual >= 1 && metrics.friction >= 2)) {
-    return RESULT_TYPES.wait;
-  }
-  if (metrics.switches >= 2 && metrics.switches >= metrics.load) {
-    return RESULT_TYPES.tabs;
-  }
-  if (isSearchHeavy && metrics.load >= metrics.switches) {
-    return RESULT_TYPES.search;
-  }
-  if (metrics.load >= 2) {
-    return RESULT_TYPES.doors;
-  }
-  if (metrics.switches >= 1) {
-    return RESULT_TYPES.tabs;
-  }
+  if (metrics.manual >= 2 || (metrics.manual >= 1 && metrics.friction >= 2)) return RESULT_TYPES.wait;
+  if (metrics.switches >= 2 && metrics.switches >= metrics.load) return RESULT_TYPES.tabs;
+  if (isSearchHeavy && metrics.load >= metrics.switches) return RESULT_TYPES.search;
+  if (metrics.load >= 2) return RESULT_TYPES.doors;
+  if (metrics.switches >= 1) return RESULT_TYPES.tabs;
   return RESULT_TYPES.doors;
 }
 
 export function getRecoveryData(answers = {}) {
   const retOpt = answers.return;
   if (!retOpt) {
-    return {
-      title: 'Не настроено',
-      returnability: 0,
-      recoveryId: 'unknown',
-      insight: 'Маршрут пока не отслеживает отвлекшихся пользователей.'
-    };
+    return { title: 'Не настроено', returnability: 0, recoveryId: 'unknown', insight: 'Маршрут пока не отслеживает отвлекшихся пользователей.' };
   }
-
   const map = {
-    lost: {
-      title: 'Ничего — клиент теряется',
-      insight: 'Слабая точка: если клиент отвлечётся и закроет диалог, вернуть его сейчас нельзя.'
-    },
-    'manager-remind': {
-      title: 'Менеджер напоминает вручную',
-      insight: 'Возврат работает, но требует ручного труда команды и постоянного контроля.'
-    },
-    digest: {
-      title: 'Общая рассылка',
-      insight: 'Клиент получит общее письмо, но оно не привязано к брошенному целевому действию.'
-    },
-    auto: {
-      title: 'Автоматическое напоминание',
-      insight: 'Сильная сторона: маршрут аккуратно возвращает клиента без участия менеджера.'
-    },
-    context: {
-      title: 'Контекстное возвращение',
-      insight: 'Отличная механика: клиент возвращается ровно на тот шаг, где остановился.'
-    },
-    unknown: {
-      title: 'Не определено',
-      insight: 'Сценарий возврата пока остаётся серой зоной.'
-    }
+    lost: { title: 'Ничего — клиент теряется', insight: 'Слабая точка: если клиент отвлечётся и закроет диалог, вернуть его сейчас нельзя.' },
+    'manager-remind': { title: 'Менеджер напоминает вручную', insight: 'Возврат работает, но требует ручного труда команды и постоянного контроля.' },
+    digest: { title: 'Общая рассылка', insight: 'Клиент получит общее письмо, но оно не привязано к брошенному целевому действию.' },
+    auto: { title: 'Автоматическое напоминание', insight: 'Сильная сторона: маршрут аккуратно возвращает клиента без участия менеджера.' },
+    context: { title: 'Контекстное возвращение', insight: 'Отличная механика: клиент возвращается ровно на тот шаг, где остановился.' },
+    unknown: { title: 'Не определено', insight: 'Сценарий возврата пока остаётся серой зоной.' }
   };
-
   const info = map[retOpt.recoveryId] || map.unknown;
-  return {
-    title: info.title,
-    recoveryId: retOpt.recoveryId || 'unknown',
-    returnability: retOpt.returnability || 0,
-    insight: info.insight
-  };
+  return { title: info.title, recoveryId: retOpt.recoveryId || 'unknown', returnability: retOpt.returnability || 0, insight: info.insight };
 }
 
 export function getPersonalInsight(answers = {}) {
@@ -151,7 +109,6 @@ export function getPersonalInsight(answers = {}) {
   if (answers.offer_info?.routeTitle) parts.push(`информация выясняется через «${answers.offer_info.routeTitle.toLowerCase()}»`);
   if (answers.choice?.routeTitle) parts.push(`выбор делается через «${answers.choice.routeTitle.toLowerCase()}»`);
   if (answers.action?.routeTitle) parts.push(`финал проходит как «${answers.action.routeTitle.toLowerCase()}»`);
-
   if (parts.length < 2) return 'Маршрут сформирован на основе ваших ответов.';
   return `Твой маршрут: ${parts.join(', затем ')}.`;
 }

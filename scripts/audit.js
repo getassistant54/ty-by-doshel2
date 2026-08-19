@@ -33,8 +33,8 @@ function checkDirectory(dir) {
 
 function checkFile(filePath) {
   const relPath = path.relative(rootDir, filePath);
-  // Исключаем внешние сторонние SDK
-  if (relPath.includes('notibot-bridge.js')) return;
+  // Исключаем внешние сторонние SDK и бандлы
+  if (relPath.includes('notibot-bridge.js') || relPath.includes('vendor-lucide.js') || relPath.includes('tailwind.min.css')) return;
 
   const content = fs.readFileSync(filePath, 'utf-8');
   const lines = content.split('\n');
