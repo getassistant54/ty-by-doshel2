@@ -1,13 +1,22 @@
 import { renderShell, renderTopbar, renderHud } from './layout.js';
 
+const GOAL_ACTIONS = {
+  lead: { title: 'Ты готов оставить заявку', cta: 'Оставить заявку' },
+  book: { title: 'Ты готов записаться', cta: 'Записаться' },
+  choose: { title: 'Подходящий вариант уже найден', cta: 'Выбрать подходящий вариант' },
+  buy: { title: 'Ты готов перейти к оплате', cta: 'Перейти к оплате' },
+  register: { title: 'Ты готов зарегистрироваться', cta: 'Зарегистрироваться' },
+  material: { title: 'Материал готов', cta: 'Получить материал' },
+  other: { title: 'Следующий шаг перед тобой', cta: 'Продолжить' },
+};
+
 function renderAlternateTopbar(index, total) {
-  const progress = Math.round(75 + ((index + 1) / total) * 20);
   return `
     <div class="topbar alternate-topbar">
       <button class="back-btn" id="alt-back-btn" data-action="back" aria-label="Назад"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
       <div class="alternate-progress">
-        <span>Маршрут 2 · пробуем иначе</span>
-        <strong>${index + 1} / ${total}</strong>
+        <strong>Маршрут 2 · пробуем иначе</strong>
+        <span>${index + 1} из ${total}</span>
       </div>
     </div>`;
 }
@@ -15,19 +24,18 @@ function renderAlternateTopbar(index, total) {
 function renderFirstRouteContext(step) {
   return `
     <div class="alternate-context">
-      <div class="eyebrow">Было в первом пути</div>
+      <div class="eyebrow">В первом маршруте</div>
       <p>${step.originalContext}</p>
     </div>`;
 }
 
 function renderGoalAction(step, goal) {
-  const action = goal?.action || 'сделать действие';
+  const action = GOAL_ACTIONS[goal?.id] || GOAL_ACTIONS.other;
   return `
     <div class="alternate-direct">
-      <div class="eyebrow">Целевое действие</div>
-      <h2 class="text-base font-bold mt-2">Осталось только ${action}</h2>
-      <p class="muted text-xs leading-relaxed mt-2">Маршрут не уводит на новые круги. Человек сразу делает то, за чем пришёл.</p>
-      <button class="primary-btn mt-6 alt-option-btn" data-alt-option-id="${step.options[0].id}" data-alt-option="${step.options[0].id}">${step.options[0].label}</button>
+      <h2 class="text-xl font-extrabold">${action.title}</h2>
+      <p class="muted mt-2">Никаких дополнительных форм — следующий шаг сразу здесь.</p>
+      <button class="primary-btn mt-6 alt-option-btn" data-alt-option-id="${step.options[0].id}" data-alt-option="${step.options[0].id}">${action.cta}</button>
     </div>`;
 }
 
@@ -36,7 +44,7 @@ function renderRegularAction(step, selected) {
     <h2 class="text-base font-bold mt-7">${step.question || 'Что выбираем?'}</h2>
     <div class="option-list">
       ${step.options.map((option) => `
-        <button class="option-card alt-option-btn ${selected === option.id ? 'option-selected' : ''}" data-alt-option-id="${option.id}" data-alt-option="${option.id}">
+        <button class="option-card alt-option-btn ${selected === option.id ? 'option-selected' : ''}" data-alt-option-id="${option.id}" data-alt-option="${option.id}" aria-pressed="${selected === option.id}">
           <span class="option-icon"><i data-lucide="${option.icon}" class="w-5 h-5"></i></span>
           <span class="option-copy">${option.label}</span>
         </button>`).join('')}
@@ -49,11 +57,26 @@ export function renderAlternateIntro() {
       <button class="back-btn" id="alt-back-btn" data-action="back" aria-label="Назад"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
       <div class="alternate-progress"><strong>Маршрут 2 · пробуем иначе</strong></div>
     </div>
-    <div class="flex-1 flex flex-col justify-center">
+    <div class="flex-1 flex flex-col pt-4 pb-6">
+      <div class="option-icon mb-5 w-12 h-12 rounded-2xl">
+        <i data-lucide="git-compare-arrows" class="w-6 h-6"></i>
+      </div>
       <div class="eyebrow">Тот же путь — меньше барьеров</div>
       <h1 class="screen-title">Теперь переиграем неудобные моменты</h1>
       <p class="lead-text mt-4">Меняем только те места, где в первом пути было лишнее трение. Ты сразу попробуешь более простой вариант.</p>
-      <button class="primary-btn mt-8" id="start-alternate-btn" data-action="start-alternate">Попробовать иначе</button>
+      
+      <div class="route-visual" aria-hidden="true">
+        <span class="route-dot active"></span><span class="route-line"></span><span class="route-dot active"></span><span class="route-line"></span><span class="route-dot active"></span>
+      </div>
+
+      <div class="glass-card mb-6">
+        <p class="text-sm font-semibold">Убираем барьеры и тупики</p>
+        <p class="muted text-xs leading-relaxed mt-2">Посмотрим, как сокращается путь клиента, когда убраны лишние развилки, ожидание ответа и переходы между вкладками.</p>
+      </div>
+
+      <div class="mt-auto">
+        <button class="primary-btn" id="start-alternate-btn" data-action="start-alternate">Попробовать иначе</button>
+      </div>
     </div>`);
 }
 
