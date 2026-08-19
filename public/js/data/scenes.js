@@ -12,3 +12,12 @@ export function getOption(scene, optionId) {
   const id = typeof optionId === 'object' ? optionId.id : optionId;
   return scene.options?.find((option) => option.id === id) || null;
 }
+
+export function getRoute(answers = {}) {
+  return SCENES.filter((scene) => scene.id !== 'return')
+    .map((scene) => {
+      const opt = getOption(scene, answers[scene.id]);
+      return opt ? (opt.route || opt.routeTitle || opt.label || opt.text) : null;
+    })
+    .filter(Boolean);
+}

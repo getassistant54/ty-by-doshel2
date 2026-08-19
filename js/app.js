@@ -2,30 +2,30 @@
  * app.js — Главный контроллер интерактивного симулятора
  */
 
-import { renderHeroScreen } from './components/hero-screen.js?v=3.5';
-import { renderGoalScreen } from './components/goal-screen.js?v=3.5';
-import { renderSceneScreen } from './components/scene-screen.js?v=3.5';
-import { renderPauseScreen } from './components/pause-modal.js?v=3.5';
-import { renderResultScreen } from './components/result-screen.js?v=3.5';
-import { renderAlternateIntro, renderNoAlternateScreen, renderAltScreen } from './components/alt-screen.js?v=3.5';
-import { renderCompareScreen } from './components/compare-screen.js?v=3.5';
-import { renderServiceScreen } from './components/service-screen.js?v=3.5';
-import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js?v=3.5';
+import { renderHeroScreen } from './components/hero-screen.js';
+import { renderGoalScreen } from './components/goal-screen.js';
+import { renderSceneScreen } from './components/scene-screen.js';
+import { renderPauseScreen } from './components/pause-modal.js';
+import { renderResultScreen } from './components/result-screen.js';
+import { renderAlternateIntro, renderNoAlternateScreen, renderAltScreen } from './components/alt-screen.js';
+import { renderCompareScreen } from './components/compare-screen.js';
+import { renderServiceScreen } from './components/service-screen.js';
+import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js';
 
-import { GOALS, getGoal } from './data/goals.js?v=3.5';
-import { SCENES, getOption, getRoute } from './data/scenes.js?v=3.5';
-import { calculateMetrics } from './scoring.js?v=3.5';
-import { determineResult } from './results.js?v=3.5';
-import { buildAlternateRoute, calculateFullAlternateMetrics } from './alternate.js?v=3.5';
-import { getComparison } from './alternate.js?v=3.5';
-import { getPersonalInsight, getRecoveryInsight, getPersonalTips } from './insights.js?v=3.5';
-import { getRecovery } from './scoring.js?v=3.5';
-import { showChoiceFeedback } from './interaction.js?v=3.5';
-import { advanceMainRoute, advanceAlternateRoute, goBack } from './navigation.js?v=3.5';
-import { initIcons, resetScroll } from './utils.js?v=3.5';
-import { CONFIG } from './config.js?v=3.5';
-import { getState, setState, updateState, resetState, saveAnswer, saveAlternateAnswer } from './state.js?v=3.5';
-import { initBridge, hapticImpact } from './bridge.js?v=3.5';
+import { GOALS, getGoal } from './data/goals.js';
+import { SCENES, getOption, getRoute } from './data/scenes.js';
+import { calculateMetrics } from './scoring.js';
+import { determineResult } from './results.js';
+import { buildAlternateRoute, calculateFullAlternateMetrics } from './alternate.js';
+import { getComparison } from './alternate.js';
+import { getPersonalInsight, getRecoveryInsight, getPersonalTips } from './insights.js';
+import { getRecovery } from './scoring.js';
+import { showChoiceFeedback } from './interaction.js';
+import { advanceMainRoute, advanceAlternateRoute, goBack } from './navigation.js';
+import { initIcons, resetScroll } from './utils.js';
+import { CONFIG } from './config.js';
+import { getState, setState, updateState, resetState, saveAnswer, saveAlternateAnswer } from './state.js';
+import { initBridge, hapticImpact } from './bridge.js';
 
 const app = document.getElementById('app');
 let drawerRoot = null;
