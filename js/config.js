@@ -5,6 +5,6 @@ export const CONFIG = {
     feedbackDelay: 1800,
   },
   notibot: {
-    formId: null,
+    formId: '5o9Qgbk90iwL4vryUdjyGW',
   },
 };
