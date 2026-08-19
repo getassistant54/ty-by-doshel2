@@ -64,7 +64,7 @@ export const SCENES_TWO = [
       option('broadcast', 'Получит общую рассылку', 'mails', 'Общая рассылка', { returnability: 1 }),
       option('auto', 'Получит автоматическое напоминание', 'bell-ring', 'Автонапоминание', { returnability: 2 }),
       option('context', 'Получит сообщение по своему действию', 'message-circle-heart', 'Контекстное возвращение', { returnability: 3 }),
-      option('unknown', 'Не знаю', 'circle-help', 'Нет сценария возврата', { returnability: -1 }),
+      option('unknown', 'Не знаю', 'help-circle', 'Нет сценария возврата', { returnability: -1 }),
     ],
     alt: {
       title: 'Маршрут помнит клиента',
