@@ -63,12 +63,20 @@ export async function submitToNotibot(payload) {
   const formId = window.NOTIBOT_FORM_ID || CONFIG?.notibot?.formId || null;
 
   if (formId && window.notibot && typeof window.notibot.submitForm === 'function') {
-    const formattedAnswers = Object.entries(payload).map(([k, v]) => ({
-      title: k,
-      answers: Array.isArray(v) ? v.map(String) : [String(v ?? '')]
-    }));
+    const summaryText = `Диагноз: ${payload.resultType || 'N/A'} | Цель: ${payload.selectedGoal || 'N/A'} | Интерес: ${payload.interest}/5 | Нагрузка: ${payload.load} | Переходы: ${payload.switches} | Трение: ${payload.friction}`;
+
+    const answers = [
+      { title: 'Имя', answers: payload.name ? [payload.name] : [] },
+      { title: 'Куда написать', answers: payload.contact ? [payload.contact] : [] },
+      { title: 'Контакт', answers: payload.contact ? [payload.contact] : [] },
+      { title: 'Что сейчас важнее всего', answers: payload.leadGoal ? [payload.leadGoal] : [] },
+      { title: 'Цель разбора', answers: payload.leadGoal ? [payload.leadGoal] : [] },
+      { title: 'Результат диагностики', answers: [summaryText] },
+      { title: 'Детали', answers: [JSON.stringify(payload)] },
+    ];
+
     try {
-      const res = await window.notibot.submitForm(formId, formattedAnswers);
+      const res = await window.notibot.submitForm(formId, answers);
       return { success: true, mode: 'real', data: res };
     } catch (err) {
       console.error('Notibot submit error:', err);
