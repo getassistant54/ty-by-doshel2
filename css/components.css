@@ -102,8 +102,34 @@
 .secondary-btn { width: 100%; min-height: 2.85rem; padding: .7rem 1rem; border: 1px solid var(--color-border); border-radius: .95rem; background: var(--color-surface); color: #f8f7f3 !important; font-size: .92rem; font-weight: 800; cursor: pointer; }
 .text-btn { border: 0; background: transparent; color: #a7a8b3 !important; font-size: .8rem; font-weight: 700; cursor: pointer; padding: .4rem; }
 
+.ai-card {
+  padding: .85rem;
+  border-radius: .95rem;
+  border: 1px solid rgba(255, 200, 87, 0.4);
+  background: linear-gradient(145deg, rgba(30, 24, 18, 0.9), rgba(20, 22, 32, 0.95));
+  box-shadow: 0 8px 32px rgba(255, 107, 74, 0.15);
+  backdrop-filter: blur(12px);
+}
+.ai-badge {
+  padding: .2rem .55rem;
+  border-radius: 99px;
+  font-size: .68rem;
+  font-weight: 800;
+  color: #10121a !important;
+  background: linear-gradient(135deg, #ffc857, #ff9a3c);
+  box-shadow: 0 2px 8px rgba(255, 200, 87, 0.4);
+}
+
 .glass-card { padding: .75rem; border-radius: .95rem; border: 1px solid var(--color-border); background: var(--color-surface); }
-.result-card { padding: .85rem; border-radius: 1.1rem; border: 1px solid var(--color-border); background: #151823; box-shadow: var(--shadow-card); }
+.result-card { padding: .75rem .85rem; border-radius: .95rem; border: 1px solid var(--color-border); background: rgba(23, 26, 37, 0.85); box-shadow: var(--shadow-card); }
+.metric-list { display: flex; flex-direction: column; gap: .4rem; }
+.metric-row { display: flex; align-items: center; gap: .65rem; padding: .35rem .45rem; border-radius: .65rem; background: rgba(255, 255, 255, 0.04); }
+.metric-icon { width: 1.85rem; height: 1.85rem; border-radius: .5rem; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 200, 87, 0.12); color: #ffc857 !important; flex-shrink: 0; }
+.metric-text { font-size: .8rem; font-weight: 600; line-height: 1.25; color: #f8f7f3 !important; }
+
+.route-chip-list { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; margin-top: .3rem; }
+.route-chip { padding: .25rem .55rem; border-radius: .55rem; font-size: .72rem; font-weight: 600; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--color-border); color: #f8f7f3 !important; }
+
 .recovery-card { padding: .75rem; border-radius: .85rem; border: 1px solid var(--color-border); background: var(--color-surface); display: flex; gap: .6rem; }
 .recovery-positive { border-color: rgba(121, 215, 167, .4); background: rgba(121, 215, 167, .08); }
 .recovery-warning { border-color: rgba(255, 107, 74, .4); background: rgba(255, 107, 74, .08); }
