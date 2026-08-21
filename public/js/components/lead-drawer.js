@@ -127,9 +127,9 @@ export function setupLeadDrawer(rootEl, getState) {
             <i data-lucide="check-circle" class="w-6 h-6"></i>
           </div>
           <h3 class="text-lg font-extrabold text-white mb-1.5">Заявка принята!</h3>
-          <p class="muted text-xs leading-relaxed mb-4">Скоро свяжусь с вами. А пока переходите к статье-лидмагниту:</p>
+          <p class="muted text-xs leading-relaxed mb-4">Скоро свяжусь с вами для разбора. А пока смотрите готовые решения:</p>
           <a href="${articleUrl}" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2" target="_top">
-            <span>Читать статью-лидмагнит</span>
+            <span>⚡ 7 схем: как сократить путь клиента</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
         </div>
