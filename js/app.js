@@ -82,21 +82,6 @@ export function render() {
     }),
     pause: renderPauseScreen,
     result: () => {
-      import('./ai-handler.js').then(({ getCachedAiResult, sendToAi }) => {
-        if (!getCachedAiResult()) {
-          const payload = {
-            project: "Интерактивный симулятор «Ты бы дошёл?»",
-            answers: Object.entries(state.answers).map(([sceneId, optId]) => ({ sceneId, optId })),
-            goalId: state.goalId
-          };
-          sendToAi(payload).then(() => {
-            if (getState().view === 'result') {
-              render();
-            }
-          }).catch(e => console.warn('AI background analysis error:', e));
-        }
-      }).catch(() => {});
-
       return renderResultScreen({
         result,
         metrics,
@@ -153,9 +138,25 @@ function handleOption(button) {
   const choice = getOption(scene, optId);
   const before = calculateMetrics(state.answers);
   saveAnswer(scene.id, choice?.id || optId);
-  const after = calculateMetrics(getState().answers);
+  const updatedState = getState();
+  const after = calculateMetrics(updatedState.answers);
   hapticImpact('light');
   showChoiceFeedback({ root: app, button, before, after, reaction: choice?.reaction });
+
+  // Фоновая предзагрузка разбора стратегии во время таймера анимации
+  if (state.sceneIndex >= SCENES.length - 2) {
+    import('./ai-handler.js').then(({ getCachedAiResult, sendToAi }) => {
+      if (!getCachedAiResult()) {
+        const payload = {
+          project: "Интерактивный симулятор «Ты бы дошёл?»",
+          answers: Object.entries(updatedState.answers).map(([sceneId, oId]) => ({ sceneId, optId: oId })),
+          goalId: updatedState.goalId
+        };
+        sendToAi(payload).catch(() => {});
+      }
+    }).catch(() => {});
+  }
+
   setTimeout(() => { advanceMainRoute(); render(); }, CONFIG.ui.feedbackDelay);
 }
 
