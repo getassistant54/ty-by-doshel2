@@ -115,7 +115,13 @@ export function renderAltScreen({ step, episode, episodeIndex, index, total, tot
       <h1 class="screen-title">${currentStep.title}</h1>
       <p class="lead-text mt-4">${currentStep.text || ''}</p>
       ${currentStep.sceneId === 'action' ? renderGoalAction(currentStep, goal) : renderRegularAction(currentStep, selected)}
-      <div id="metric-deltas" class="metric-deltas" aria-live="polite"></div>
-      <div id="alt-reaction-text" class="reaction" role="status"></div>
+      <div id="choice-feedback" class="choice-feedback hidden">
+        <div class="feedback-badge-row">
+          <span class="feedback-tag">Результат шага</span>
+          <div id="metric-deltas" class="metric-deltas" aria-live="polite"></div>
+        </div>
+        <div id="alt-reaction-text" class="reaction-bubble" role="status"></div>
+        <div class="feedback-timer"><div class="feedback-timer-bar"></div></div>
+      </div>
     </div>`);
 }

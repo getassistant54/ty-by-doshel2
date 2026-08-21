@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="./css/styles.css?v=3.5">
-  <link rel="stylesheet" href="./css/components.css?v=3.5">
-  <link rel="stylesheet" href="./css/animations.css?v=3.5">
+  <link rel="stylesheet" href="./css/styles.css?v=4.0">
+  <link rel="stylesheet" href="./css/components.css?v=4.0">
+  <link rel="stylesheet" href="./css/animations.css?v=4.0">
 
   <!-- Гарантированные инлайн-стили темы Codex (защита от кэша и перебивания темой Telegram) -->
   <style>
@@ -62,6 +62,19 @@
     .option-card.option-selected {
       background: rgba(255, 107, 74, 0.18) !important;
     }
+    .option-card.option-hidden {
+      opacity: 0 !important;
+      max-height: 0 !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border-width: 0 !important;
+      pointer-events: none !important;
+      overflow: hidden !important;
+    }
+    .choice-feedback.hidden {
+      display: none !important;
+    }
     .option-icon {
       background: rgba(255, 200, 87, 0.12) !important;
       color: #ffc857 !important;
@@ -72,9 +85,9 @@
   </style>
   
   <!-- Notibot Bridge SDK -->
-  <script src="./js/notibot-bridge.js?v=3.0"></script>
+  <script src="./js/notibot-bridge.js?v=4.0"></script>
   <!-- Lucide Icons -->
-  <script src="./js/vendor-lucide.js?v=3.0"></script>
+  <script src="./js/vendor-lucide.js?v=4.0"></script>
 </head>
 <body>
   <div class="ambient ambient-one" aria-hidden="true"></div>
@@ -82,6 +95,6 @@
 
   <div id="app"></div>
 
-  <script type="module" src="./js/app.js?v=3.0"></script>
+  <script type="module" src="./js/app.js?v=4.0"></script>
 </body>
 </html>

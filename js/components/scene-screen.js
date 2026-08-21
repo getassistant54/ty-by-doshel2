@@ -32,9 +32,15 @@ export function renderSceneScreen({ scene, metrics, index, total, selected, goal
     <div class="eyebrow">${scene.kicker || 'Шаг ' + ((index ?? 0) + 1)}</div>
     <h1 class="screen-title">${copy.title}</h1>
     <p class="lead-text mt-1">${copy.text}</p>
-    <h2 class="text-xs font-bold uppercase tracking-wider text-muted mt-3 mb-1">${copy.question}</h2>
+    <h2 class="text-xs font-bold uppercase tracking-wider text-muted mt-2 mb-1">${copy.question}</h2>
     <div class="option-list">${options}</div>
-    <div id="metric-deltas" class="metric-deltas" aria-live="polite"></div>
-    <div id="reaction-text" class="reaction" role="status"></div>
+    <div id="choice-feedback" class="choice-feedback hidden">
+      <div class="feedback-badge-row">
+        <span class="feedback-tag">Результат шага</span>
+        <div id="metric-deltas" class="metric-deltas" aria-live="polite"></div>
+      </div>
+      <div id="reaction-text" class="reaction-bubble" role="status"></div>
+      <div class="feedback-timer"><div class="feedback-timer-bar"></div></div>
+    </div>
   `);
 }
