@@ -2,15 +2,15 @@
  * app.js — Главный контроллер интерактивного симулятора
  */
 
-import { renderHeroScreen } from './components/hero-screen.js';
-import { renderGoalScreen } from './components/goal-screen.js';
-import { renderSceneScreen } from './components/scene-screen.js';
-import { renderPauseScreen } from './components/pause-modal.js';
-import { renderResultScreen } from './components/result-screen.js';
-import { renderAlternateIntro, renderNoAlternateScreen, renderAltScreen } from './components/alt-screen.js';
-import { renderCompareScreen } from './components/compare-screen.js';
-import { renderServiceScreen } from './components/service-screen.js';
-import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js';
+import { renderHeroScreen } from './components/hero-screen.js?v=5.5';
+import { renderGoalScreen } from './components/goal-screen.js?v=5.5';
+import { renderSceneScreen } from './components/scene-screen.js?v=5.5';
+import { renderPauseScreen } from './components/pause-modal.js?v=5.5';
+import { renderResultScreen } from './components/result-screen.js?v=5.5';
+import { renderAlternateIntro, renderNoAlternateScreen, renderAltScreen } from './components/alt-screen.js?v=5.5';
+import { renderCompareScreen } from './components/compare-screen.js?v=5.5';
+import { renderServiceScreen } from './components/service-screen.js?v=5.5';
+import { renderLeadDrawer, setupLeadDrawer } from './components/lead-drawer.js?v=5.5';
 
 import { GOALS, getGoal } from './data/goals.js';
 import { SCENES, getOption, getRoute } from './data/scenes.js';

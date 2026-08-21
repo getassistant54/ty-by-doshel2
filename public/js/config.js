@@ -8,8 +8,6 @@ export const CONFIG = {
   },
   notibot: {
     formId: '5o9Qgbk90iwL4vryUdjyGW',
-    // Куда перенаправить клиента после отправки (статья-лидмагнит)
-    redirectUrl: '/page/3w8WBNVTfFQ3Evg7dBStwq',
     autoClose: false,
   },
 };

@@ -9,58 +9,56 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="./css/styles.css?v=5.4">
-  <link rel="stylesheet" href="./css/components.css?v=5.4">
-  <link rel="stylesheet" href="./css/animations.css?v=5.4">
+  <link rel="stylesheet" href="./css/styles.css?v=5.5">
+  <link rel="stylesheet" href="./css/components.css?v=5.5">
+  <link rel="stylesheet" href="./css/animations.css?v=5.5">
 
   <!-- Гарантированные инлайн-стили темы Codex (защита от кэша и перебивания темой Telegram) -->
   <style>
     :root {
-      --color-bg: #10121a !important;
-      --color-bg-soft: #171a25 !important;
-      --color-text: #f8f7f3 !important;
-      --color-muted: #a7a8b3 !important;
-      --color-accent: #ff6b4a !important;
+      --color-bg: #0f1015 !important;
+      --color-card-bg: #171821 !important;
+      --color-text-main: #f8f7f3 !important;
+      --color-text-muted: #9a9895 !important;
+      --color-accent: #ff5c35 !important;
       --color-accent-2: #ffc857 !important;
-      --color-positive: #79d7a7 !important;
-      --color-surface: rgba(255, 255, 255, 0.07) !important;
-      --color-surface-strong: rgba(255, 255, 255, 0.11) !important;
-      --color-border: rgba(255, 255, 255, 0.12) !important;
+      --color-accent-hover: #ff7452 !important;
+      --color-border: rgba(255, 255, 255, 0.08) !important;
     }
-    html, body {
-      background-color: #10121a !important;
-      background: radial-gradient(circle at 20% 0%, rgba(255, 107, 74, 0.15), transparent 30rem), linear-gradient(180deg, #10121a 0%, #12141d 100%) !important;
+    body, html, #app {
+      background-color: #0f1015 !important;
+      color: #f8f7f3 !important;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+    .hud, .option-card, .metric-card, .tip-item, .drawer-panel {
+      background: #171821 !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
       color: #f8f7f3 !important;
     }
     .primary-btn {
-      background-color: #ff6b4a !important;
-      background: linear-gradient(135deg, #ff7a59, #ff5733) !important;
+      background: #ff5c35 !important;
       color: #ffffff !important;
-      box-shadow: 0 8px 24px rgba(255, 107, 74, 0.38) !important;
     }
-    .accent {
-      color: #ff6b4a !important;
+    .primary-btn:hover, .primary-btn:active {
+      background: #ff7452 !important;
+    }
+    .secondary-btn {
+      background: #171821 !important;
+      color: #f8f7f3 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
     .eyebrow {
       color: #ffc857 !important;
     }
-    .route-dot, .route-dot.active {
-      border-color: #ff6b4a !important;
+    .text-muted, .muted {
+      color: #9a9895 !important;
     }
-    .route-dot.active {
-      background: #ff6b4a !important;
-    }
-    .display-title, .screen-title {
+    .metric-value {
       color: #f8f7f3 !important;
-    }
-    .option-card {
-      color: #f8f7f3 !important;
-    }
-    .option-card:hover, .option-card.option-selected {
-      border-color: #ff6b4a !important;
     }
     .option-card.option-selected {
-      background: rgba(255, 107, 74, 0.18) !important;
+      border-color: #ff5c35 !important;
+      background: rgba(255, 92, 53, 0.12) !important;
     }
     .option-card.option-hidden {
       opacity: 0 !important;
@@ -85,9 +83,9 @@
   </style>
   
   <!-- Notibot Bridge SDK -->
-  <script src="./js/notibot-bridge.js?v=4.0"></script>
+  <script src="./js/notibot-bridge.js?v=5.5"></script>
   <!-- Lucide Icons -->
-  <script src="./js/vendor-lucide.js?v=4.0"></script>
+  <script src="./js/vendor-lucide.js?v=5.5"></script>
 </head>
 <body>
   <div class="ambient ambient-one" aria-hidden="true"></div>
@@ -95,6 +93,6 @@
 
   <div id="app"></div>
 
-  <script type="module" src="./js/app.js?v=4.0"></script>
+  <script type="module" src="./js/app.js?v=5.5"></script>
 </body>
 </html>
