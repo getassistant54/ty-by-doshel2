@@ -118,7 +118,16 @@ export function setupLeadDrawer(rootEl, getState) {
 
     submitButton.disabled = true;
     submitButton.textContent = 'Отправляем...';
-    if (res.success) {
+    
+    let res;
+    try {
+      res = await submitToNotibot(payload);
+    } catch (err) {
+      console.error('Submit error:', err);
+      res = { success: false, error: err.message };
+    }
+
+    if (res && res.success) {
       hapticImpact('medium');
       const articleUrl = 'https://t.me/em_rto_bot?start=page_3w8WBNVTfFQ3Evg7dBStwq';
       form.innerHTML = `
