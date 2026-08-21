@@ -189,7 +189,11 @@ function handleAction(action) {
     updateState({ view: 'goal' }); 
   }
   if (action === 'back') return handleBack();
-  if (action === 'continue-route') updateState({ view: 'play', sceneIndex: 3 });
+  if (action === 'continue-route') {
+    updateState({ view: 'play', sceneIndex: 3, pauseSeen: true });
+    render();
+    return;
+  }
   if (action === 'later') return showLaterReaction();
   if (action === 'alternate') updateState({ view: 'alternate-intro' });
   if (action === 'alternate-empty') updateState({ view: 'alternate-empty' });
@@ -203,12 +207,21 @@ function showLaterReaction() {
   if (isTransitioning) return;
   isTransitioning = true;
   const el = document.getElementById('pause-reaction');
+  const btnGroup = document.getElementById('pause-buttons');
+  if (btnGroup) {
+    const laterBtn = btnGroup.querySelector('#pause-later-btn');
+    if (laterBtn) laterBtn.classList.add('option-selected');
+    const contBtn = btnGroup.querySelector('#pause-continue-btn');
+    if (contBtn) contBtn.classList.add('option-hidden');
+  }
   if (el) {
     el.classList.remove('hidden');
-    el.textContent = 'Знакомо? Реальный клиент тоже часто выбирает «потом». Но ты сегодня очень мотивирован.';
   }
   hapticImpact('medium');
-  setTimeout(() => { updateState({ view: 'play', sceneIndex: 3 }); render(); }, 1700);
+  setTimeout(() => {
+    updateState({ view: 'play', sceneIndex: 3, pauseSeen: true });
+    render();
+  }, 2200);
 }
 
 app.addEventListener('click', (event) => {
