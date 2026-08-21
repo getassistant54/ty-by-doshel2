@@ -41,12 +41,12 @@ function renderGoalAction(step, goal) {
 
 function renderRegularAction(step, selected) {
   return `
-    <h2 class="text-base font-bold mt-7">${step.question || 'Что выбираем?'}</h2>
+    <h2 class="text-xs font-bold uppercase tracking-wider text-muted mt-3 mb-1">${step.question || 'Что выбираем?'}</h2>
     <div class="option-list">
-      ${step.options.map((option) => `
+      ${(step.options || []).map((option) => `
         <button class="option-card alt-option-btn ${selected === option.id ? 'option-selected' : ''}" data-alt-option-id="${option.id}" data-alt-option="${option.id}" aria-pressed="${selected === option.id}">
-          <span class="option-icon"><i data-lucide="${option.icon}" class="w-5 h-5"></i></span>
-          <span class="option-copy">${option.label}</span>
+          <span class="option-icon"><i data-lucide="${option.icon || 'zap'}" class="w-4 h-4"></i></span>
+          <span class="option-copy">${option.label || option.text}</span>
         </button>`).join('')}
     </div>`;
 }
@@ -111,10 +111,10 @@ export function renderAltScreen({ step, episode, episodeIndex, index, total, tot
     ${metrics ? renderHud(metrics) : ''}
     <div class="flex-1 flex flex-col">
       ${currentStep.originalContext ? renderFirstRouteContext(currentStep) : ''}
-      <div class="eyebrow mt-6">Пробуем иначе</div>
+      <div class="eyebrow mt-3">Пробуем иначе</div>
       <h1 class="screen-title">${currentStep.title}</h1>
-      <p class="lead-text mt-4">${currentStep.text || ''}</p>
-      ${currentStep.sceneId === 'action' ? renderGoalAction(currentStep, goal) : renderRegularAction(currentStep, selected)}
+      <p class="lead-text mt-1">${currentStep.text || ''}</p>
+      ${renderRegularAction(currentStep, selected)}
       <div id="choice-feedback" class="choice-feedback hidden">
         <div class="feedback-badge-row">
           <span class="feedback-tag">Результат шага</span>
