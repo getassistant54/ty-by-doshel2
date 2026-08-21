@@ -1,6 +1,7 @@
 import { getBridgeState, submitToNotibot, hapticImpact, hapticSelection } from '../bridge.js';
 import { calculateMetrics } from '../scoring.js';
 import { determineResult } from '../results.js';
+import { CONFIG } from '../config.js';
 import { getRecoveryInsight } from '../insights.js';
 import { getRecovery } from '../scoring.js';
 import { initIcons } from '../utils.js';
@@ -117,22 +118,28 @@ export function setupLeadDrawer(rootEl, getState) {
 
     submitButton.disabled = true;
     submitButton.textContent = 'Отправляем...';
-    message.textContent = '';
-
     const res = await submitToNotibot(payload);
 
-    if (res.mode === 'real' && res.success) {
+    if (res.success) {
       message.className = 'form-message text-emerald-300 font-semibold';
-      message.textContent = '✅ Заявка успешно отправлена в Notibot!';
+      message.textContent = '✅ Спасибо! Заявка принята. Скоро свяжусь с вами в Telegram.';
       submitButton.textContent = 'Отправлено';
       hapticImpact('light');
-      setTimeout(close, 2200);
-    } else if (res.mode === 'standalone') {
-      message.className = 'form-message text-emerald-300 font-semibold';
-      message.textContent = '✅ Заявка принята! (в Telegram отправляется в бота)';
-      submitButton.textContent = 'Отправлено';
-      hapticImpact('light');
-      setTimeout(close, 2200);
+
+      setTimeout(() => {
+        close();
+        if (CONFIG?.notibot?.redirectUrl) {
+          if (window.notibot?.openLink) {
+            window.notibot.openLink(CONFIG.notibot.redirectUrl);
+          } else {
+            window.location.href = CONFIG.notibot.redirectUrl;
+          }
+        } else if (CONFIG?.notibot?.autoClose) {
+          if (window.Telegram?.WebApp?.close) {
+            window.Telegram.WebApp.close();
+          }
+        }
+      }, 1800);
     } else {
       message.className = 'form-message text-rose-400';
       message.textContent = `❌ Ошибка: ${res.error || 'Не удалось отправить форму'}`;
