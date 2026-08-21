@@ -130,6 +130,28 @@
 .route-chip-list { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; margin-top: .3rem; }
 .route-chip { padding: .25rem .55rem; border-radius: .55rem; font-size: .72rem; font-weight: 600; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--color-border); color: #f8f7f3 !important; }
 
+.tip-list { display: flex; flex-direction: column; gap: .5rem; margin-top: .6rem; }
+.tip-item { display: flex; align-items: flex-start; gap: .55rem; }
+.tip-icon { width: 1.35rem; height: 1.35rem; border-radius: 99px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 200, 87, 0.15); color: #ffc857 !important; flex-shrink: 0; margin-top: .1rem; }
+.tip-text { font-size: .8rem; line-height: 1.35; color: #a7a8b3 !important; }
+
+/* Утилиты гибкой верстки */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.shrink-0 { flex-shrink: 0; }
+.gap-1 { gap: .25rem; }
+.gap-1\.5 { gap: .375rem; }
+.gap-2 { gap: .5rem; }
+.gap-2\.5 { gap: .625rem; }
+.gap-3 { gap: .75rem; }
+.space-y-1 > * + * { margin-top: .25rem; }
+.space-y-2 > * + * { margin-top: .5rem; }
+.space-y-2\.5 > * + * { margin-top: .625rem; }
+.space-y-3 > * + * { margin-top: .75rem; }
+
 .recovery-card { padding: .75rem; border-radius: .85rem; border: 1px solid var(--color-border); background: var(--color-surface); display: flex; gap: .6rem; }
 .recovery-positive { border-color: rgba(121, 215, 167, .4); background: rgba(121, 215, 167, .08); }
 .recovery-warning { border-color: rgba(255, 107, 74, .4); background: rgba(255, 107, 74, .08); }

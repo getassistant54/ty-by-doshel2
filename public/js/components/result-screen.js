@@ -93,10 +93,16 @@ export function renderResultScreen({ answers = {}, goalId, metrics: customMetric
     ` : ''}
 
     <div class="glass-card mt-4">
+      <div class="eyebrow text-[var(--color-accent-2)] mb-1">Точки роста</div>
       <p class="font-bold text-sm">Что можно улучшить</p>
-      <div class="mt-3 space-y-2.5">${tips.map((tip) => `
-        <div class="flex items-start gap-2.5"><span class="option-icon w-6 h-6 rounded-md shrink-0"><i data-lucide="diamond" class="w-3 h-3"></i></span><p class="muted text-xs leading-relaxed">${escapeHtml(tip)}</p></div>
-      `).join('')}</div>
+      <div class="tip-list">
+        ${tips.map((tip) => `
+          <div class="tip-item">
+            <span class="tip-icon"><i data-lucide="check" class="w-3 h-3"></i></span>
+            <span class="tip-text">${escapeHtml(tip)}</span>
+          </div>
+        `).join('')}
+      </div>
     </div>
 
     <button class="primary-btn mt-5 mb-4" id="try-alt-route-btn" data-action="alternate">Показать другой маршрут</button>
