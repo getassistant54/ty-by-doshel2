@@ -59,9 +59,29 @@
             }
         }
 
-        openLink(url) { this._sendAction('open_link', { url }); }
+        openLink(url) { 
+            this._sendAction('open_link', { url }); 
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'open_link', url }, '*');
+                window.parent.postMessage({ type: 'navigate', path: url }, '*');
+            }
+            if (url.startsWith('/page/')) {
+                const pageId = url.replace('/page/', '');
+                if (window.Telegram?.WebApp?.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(`https://t.me/em_rto_bot?start=page_${pageId}`);
+                }
+            } else if (url.startsWith('https://t.me/') && window.Telegram?.WebApp?.openTelegramLink) {
+                window.Telegram.WebApp.openTelegramLink(url);
+            }
+        }
         openStorefront() { this.openLink('/vitrina'); }
-        openArticle(id) { this.openLink(`/page/${id}`); }
+        openArticle(id) { 
+            this._sendAction('open_article', { id });
+            this.openLink(`/page/${id}`); 
+            if (window.Telegram?.WebApp?.openTelegramLink) {
+                window.Telegram.WebApp.openTelegramLink(`https://t.me/em_rto_bot?start=page_${id}`);
+            }
+        }
         openProduct(id) { this.openLink(`/product/${id}`); }
         openUserCard() { this.openLink('/usercard'); }
 

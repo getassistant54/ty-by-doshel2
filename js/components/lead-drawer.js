@@ -118,31 +118,41 @@ export function setupLeadDrawer(rootEl, getState) {
 
     submitButton.disabled = true;
     submitButton.textContent = 'Отправляем...';
-    const res = await submitToNotibot(payload);
-
     if (res.success) {
-      message.className = 'form-message text-emerald-300 font-semibold';
-      message.textContent = '✅ Спасибо! Заявка принята. Скоро свяжусь с вами.';
-      submitButton.textContent = 'Отправлено';
-      hapticImpact('light');
+      hapticImpact('medium');
+      const articleUrl = 'https://t.me/em_rto_bot?start=page_3w8WBNVTfFQ3Evg7dBStwq';
+      form.innerHTML = `
+        <div class="text-center py-2">
+          <div class="option-icon mx-auto mb-3 w-12 h-12 rounded-2xl bg-[rgba(121,215,167,0.15)] text-[#79d7a7]">
+            <i data-lucide="check-circle" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-white mb-1.5">Заявка принята!</h3>
+          <p class="muted text-xs leading-relaxed mb-4">Скоро свяжусь с вами. А пока переходите к статье-лидмагниту:</p>
+          <a href="${articleUrl}" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2" target="_top">
+            <span>Читать статью-лидмагнит</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      `;
+      initIcons();
+
+      const btn = form.querySelector('#drawer-article-cta');
+      btn?.addEventListener('click', () => {
+        if (window.notibot?.openArticle) {
+          window.notibot.openArticle('3w8WBNVTfFQ3Evg7dBStwq');
+        }
+        if (window.Telegram?.WebApp?.openTelegramLink) {
+          window.Telegram.WebApp.openTelegramLink(articleUrl);
+        }
+      });
 
       setTimeout(() => {
-        close();
-        if (CONFIG?.notibot?.redirectUrl) {
-          const target = CONFIG.notibot.redirectUrl;
-          if (window.notibot?.openArticle && target.startsWith('/page/')) {
-            window.notibot.openArticle(target.replace('/page/', ''));
-          } else if (window.notibot?.openLink) {
-            window.notibot.openLink(target);
-          } else {
-            window.location.href = target;
-          }
-        } else if (CONFIG?.notibot?.autoClose) {
-          if (window.Telegram?.WebApp?.close) {
-            window.Telegram.WebApp.close();
-          }
+        if (window.notibot?.openArticle) {
+          window.notibot.openArticle('3w8WBNVTfFQ3Evg7dBStwq');
+        } else if (window.Telegram?.WebApp?.openTelegramLink) {
+          window.Telegram.WebApp.openTelegramLink(articleUrl);
         }
-      }, 1500);
+      }, 1200);
     } else {
       message.className = 'form-message text-rose-400';
       message.textContent = `❌ Ошибка: ${res.error || 'Не удалось отправить форму'}`;

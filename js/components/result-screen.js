@@ -30,12 +30,12 @@ export function renderResultScreen({ answers = {}, goalId, metrics: customMetric
     <p class="lead-text mt-2">${escapeHtml(result.summary || result.subtitle || '')}</p>
     <p class="text-sm mt-3 leading-relaxed text-[#f8f7f3]">${escapeHtml(personalInsight)}</p>
 
-    <!-- Блок ИИ-разбора от Hydra AI -->
+    <!-- Блок ИИ-разбора -->
     ${cachedAi?.data ? `
       <div class="ai-card mt-4">
         <div class="flex items-center justify-between gap-2 mb-2">
           <div class="eyebrow flex items-center gap-1.5 text-[var(--color-accent-2)]">
-            <i data-lucide="sparkles" class="w-4 h-4"></i> Нейро-разбор Hydra AI
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Нейро-разбор стратегии
           </div>
           <span class="ai-badge">${escapeHtml(cachedAi.data.archetype || 'Стратег')}</span>
         </div>
@@ -55,7 +55,7 @@ export function renderResultScreen({ answers = {}, goalId, metrics: customMetric
     ` : generating ? `
       <div class="ai-card mt-4 animate-pulse">
         <div class="eyebrow flex items-center gap-1.5 text-[var(--color-accent-2)]">
-          <i data-lucide="sparkles" class="w-4 h-4"></i> Нейро-разбор Hydra AI
+          <i data-lucide="sparkles" class="w-4 h-4"></i> Нейро-разбор стратегии
         </div>
         <p class="text-xs text-muted mt-2 flex items-center gap-2">
           <span class="inline-block w-2 h-2 rounded-full bg-[var(--color-accent-2)]"></span>
