@@ -46,11 +46,6 @@ export function render() {
   const metrics = calculateMetrics(state.answers);
   const alternate = buildAlternateRoute(state.answers);
 
-  if (state.view === 'play' && state.sceneIndex === 3 && !state.answers['pause-check']) {
-    saveAnswer('pause-check', 'done');
-    updateState({ view: 'pause' });
-    return render();
-  }
 
   const alternateMetrics = calculateFullAlternateMetrics(state.answers, alternate, state.alternateAnswers);
   const result = determineResult(metrics);
