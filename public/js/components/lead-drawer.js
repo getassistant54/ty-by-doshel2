@@ -122,24 +122,27 @@ export function setupLeadDrawer(rootEl, getState) {
 
     if (res.success) {
       message.className = 'form-message text-emerald-300 font-semibold';
-      message.textContent = '✅ Спасибо! Заявка принята. Скоро свяжусь с вами в Telegram.';
+      message.textContent = '✅ Спасибо! Заявка принята. Скоро свяжусь с вами.';
       submitButton.textContent = 'Отправлено';
       hapticImpact('light');
 
       setTimeout(() => {
         close();
         if (CONFIG?.notibot?.redirectUrl) {
-          if (window.notibot?.openLink) {
-            window.notibot.openLink(CONFIG.notibot.redirectUrl);
+          const target = CONFIG.notibot.redirectUrl;
+          if (window.notibot?.openArticle && target.startsWith('/page/')) {
+            window.notibot.openArticle(target.replace('/page/', ''));
+          } else if (window.notibot?.openLink) {
+            window.notibot.openLink(target);
           } else {
-            window.location.href = CONFIG.notibot.redirectUrl;
+            window.location.href = target;
           }
         } else if (CONFIG?.notibot?.autoClose) {
           if (window.Telegram?.WebApp?.close) {
             window.Telegram.WebApp.close();
           }
         }
-      }, 1800);
+      }, 1500);
     } else {
       message.className = 'form-message text-rose-400';
       message.textContent = `❌ Ошибка: ${res.error || 'Не удалось отправить форму'}`;
