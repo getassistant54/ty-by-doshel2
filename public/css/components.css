@@ -135,6 +135,12 @@
 .tip-icon { width: 1.35rem; height: 1.35rem; border-radius: 99px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 200, 87, 0.15); color: #ffc857 !important; flex-shrink: 0; margin-top: .1rem; }
 .tip-text { font-size: .8rem; line-height: 1.35; color: #a7a8b3 !important; }
 
+.service-list { display: flex; flex-direction: column; gap: .45rem; }
+.service-item { display: flex; align-items: center; gap: .65rem; padding: .35rem .45rem; border-radius: .65rem; background: rgba(255, 255, 255, 0.035); }
+.service-icon { width: 1.85rem; height: 1.85rem; border-radius: .55rem; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 200, 87, 0.12); color: #ffc857 !important; flex-shrink: 0; }
+.service-icon svg, [data-lucide] { width: 1rem; height: 1rem; }
+.service-label { font-size: .8rem; font-weight: 600; line-height: 1.25; color: #f8f7f3 !important; }
+
 /* Утилиты гибкой верстки */
 .flex { display: flex; }
 .flex-col { display: flex; flex-direction: column; }

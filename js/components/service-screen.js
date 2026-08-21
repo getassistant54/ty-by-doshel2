@@ -15,13 +15,15 @@ export function renderServiceScreen() {
       <h1 class="screen-title">Вот этим и занимается архитектор маршрута</h1>
       <p class="lead-text mt-1">Не рисует набор страниц. А разбирает весь путь.</p>
       
-      <div class="glass-card mt-3 space-y-2.5">
-        ${ITEMS.map(([icon, label]) => `
-          <div class="flex items-center gap-3">
-            <span class="option-icon shrink-0 w-7 h-7"><i data-lucide="${icon}" class="w-3.5 h-3.5"></i></span>
-            <p class="text-xs text-white font-medium">${label}</p>
-          </div>
-        `).join('')}
+      <div class="glass-card mt-3">
+        <div class="service-list">
+          ${ITEMS.map(([icon, label]) => `
+            <div class="service-item">
+              <span class="service-icon"><i data-lucide="${icon}" class="w-4 h-4"></i></span>
+              <span class="service-label">${label}</span>
+            </div>
+          `).join('')}
+        </div>
       </div>
 
       <p class="muted text-xs leading-relaxed mt-3">И только потом выбирается способ реализации. Если маршрут идёт через Telegram, одним из вариантов может быть MiniApp.</p>
