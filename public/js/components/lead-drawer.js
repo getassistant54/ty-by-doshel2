@@ -137,14 +137,15 @@ export function setupLeadDrawer(rootEl, getState, onRestart) {
           </div>
           <h3 class="text-lg font-extrabold text-white mb-1.5">Заявка принята!</h3>
           <p class="muted text-xs leading-relaxed mb-4">Скоро свяжусь с вами для разбора. А пока смотрите готовые решения:</p>
-          <div class="space-y-2.5">
-            <a href="${articleUrl}" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2" target="_top">
-              <span>⚡ 7 схем: как сократить путь клиента</span>
+          <div class="space-y-3 mt-4">
+            <button type="button" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2 w-full">
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>7 схем: как сократить путь клиента</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </a>
+            </button>
             <button type="button" id="drawer-restart-btn" class="secondary-btn flex items-center justify-center gap-2 w-full">
               <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-              <span>🔄 Пройти интерактив ещё раз</span>
+              <span>Пройти интерактив ещё раз</span>
             </button>
           </div>
         </div>
