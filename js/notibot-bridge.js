@@ -1,6 +1,7 @@
 /**
  * Notibot Bridge v2.26
  * SDK для интеграции Vibe-приложений.
+ * Поддерживает режимы: Inline, Portal, App.
  */
 (function() {
     class NotibotBridgeError extends Error {
@@ -43,13 +44,41 @@
                     const { requestId, success, data, error } = event.data;
                     const handler = this._responseHandlers[requestId];
                     if (handler) {
-                        try { handler({ success, data, error }); } catch (e) { console.error(e); }
+                        try {
+                            handler({ success, data, error });
+                        } catch (e) {
+                            console.error(e);
+                        }
                         delete this._responseHandlers[requestId];
                     }
                 }
             });
 
             this._sendAction('READY_FOR_INIT');
+
+            if (typeof ResizeObserver !== 'undefined') {
+                const resizeObserver = new ResizeObserver(entries => {
+                    for (let entry of entries) {
+                        const height = Math.ceil(entry.contentRect.height);
+                        if (height > 0) {
+                            this._sendAction('set_height', { height: height + 60 });
+                        }
+                    }
+                });
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => resizeObserver.observe(document.body));
+                } else {
+                    resizeObserver.observe(document.body);
+                }
+            }
+        }
+
+        openPortal(config = {}) {
+            this._sendAction('open_portal', config);
+        }
+
+        setScrollLock(locked) {
+            this._sendAction('set_scroll_lock', { locked });
         }
 
         onUpdate(callback) {
@@ -59,29 +88,9 @@
             }
         }
 
-        openLink(url) { 
-            this._sendAction('open_link', { url }); 
-            if (window.parent && window.parent !== window) {
-                window.parent.postMessage({ type: 'open_link', url }, '*');
-                window.parent.postMessage({ type: 'navigate', path: url }, '*');
-            }
-            if (url.startsWith('/page/')) {
-                const pageId = url.replace('/page/', '');
-                if (window.Telegram?.WebApp?.openTelegramLink) {
-                    window.Telegram.WebApp.openTelegramLink(`https://t.me/em_rto_bot?start=page_${pageId}`);
-                }
-            } else if (url.startsWith('https://t.me/') && window.Telegram?.WebApp?.openTelegramLink) {
-                window.Telegram.WebApp.openTelegramLink(url);
-            }
-        }
+        openLink(url) { this._sendAction('open_link', { url }); }
         openStorefront() { this.openLink('/vitrina'); }
-        openArticle(id) { 
-            this._sendAction('open_article', { id });
-            this.openLink(`/page/${id}`); 
-            if (window.Telegram?.WebApp?.openTelegramLink) {
-                window.Telegram.WebApp.openTelegramLink(`https://t.me/em_rto_bot?start=page_${id}`);
-            }
-        }
+        openArticle(id) { this.openLink(`/page/${id}`); }
         openProduct(id) { this.openLink(`/product/${id}`); }
         openUserCard() { this.openLink('/usercard'); }
 
@@ -114,7 +123,7 @@
                     }
                 };
                 
-                if (window.parent && window.parent !== window) {
+                if (window.parent) {
                     window.parent.postMessage({
                         source: 'vibe-sandbox',
                         type: 'submit_form',
@@ -136,7 +145,7 @@
             if (this._lastActionTimes[type] && (now - this._lastActionTimes[type] < (type === 'haptic_feedback' ? 50 : 400))) return;
             this._lastActionTimes[type] = now;
 
-            if (window.parent && window.parent !== window) {
+            if (window.parent) {
                 window.parent.postMessage({ source: 'vibe-sandbox', type, payload }, '*');
             }
         }

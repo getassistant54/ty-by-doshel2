@@ -95,7 +95,10 @@ export async function submitToNotibot(payload) {
   // 1. Если симулятор открыт внутри Telegram / Notibot фрейма
   if (isInsideNotibot && window.notibot && typeof window.notibot.submitForm === 'function') {
     try {
-      const result = await window.notibot.submitForm(formId, answers);
+      const result = await Promise.race([
+        window.notibot.submitForm(formId, answers),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Превышено время ожидания ответа от Notibot')), 7000))
+      ]);
       return { success: true, mode: 'real', data: result };
     } catch (error) {
       console.error('Notibot submit error:', error);
