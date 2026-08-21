@@ -51,7 +51,7 @@ export function renderLeadDrawer() {
   `;
 }
 
-export function setupLeadDrawer(rootEl, getState) {
+export function setupLeadDrawer(rootEl, getState, onRestart) {
   const drawer = rootEl.querySelector('#lead-drawer');
   const contactField = rootEl.querySelector('[data-contact-field]');
   const contactInput = rootEl.querySelector('#lead-contact');
@@ -137,16 +137,22 @@ export function setupLeadDrawer(rootEl, getState) {
           </div>
           <h3 class="text-lg font-extrabold text-white mb-1.5">Заявка принята!</h3>
           <p class="muted text-xs leading-relaxed mb-4">Скоро свяжусь с вами для разбора. А пока смотрите готовые решения:</p>
-          <a href="${articleUrl}" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2" target="_top">
-            <span>⚡ 7 схем: как сократить путь клиента</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </a>
+          <div class="space-y-2.5">
+            <a href="${articleUrl}" id="drawer-article-cta" class="primary-btn flex items-center justify-center gap-2" target="_top">
+              <span>⚡ 7 схем: как сократить путь клиента</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <button type="button" id="drawer-restart-btn" class="secondary-btn flex items-center justify-center gap-2 w-full">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>🔄 Пройти интерактив ещё раз</span>
+            </button>
+          </div>
         </div>
       `;
       initIcons();
 
-      const btn = form.querySelector('#drawer-article-cta');
-      btn?.addEventListener('click', () => {
+      const articleBtn = form.querySelector('#drawer-article-cta');
+      articleBtn?.addEventListener('click', () => {
         if (window.notibot?.openArticle) {
           window.notibot.openArticle('3w8WBNVTfFQ3Evg7dBStwq');
         }
@@ -155,16 +161,23 @@ export function setupLeadDrawer(rootEl, getState) {
         }
       });
 
-      setTimeout(() => {
-        if (window.notibot?.openArticle) {
-          window.notibot.openArticle('3w8WBNVTfFQ3Evg7dBStwq');
-        } else if (window.Telegram?.WebApp?.openTelegramLink) {
-          window.Telegram.WebApp.openTelegramLink(articleUrl);
+      const restartBtn = form.querySelector('#drawer-restart-btn');
+      restartBtn?.addEventListener('click', () => {
+        close();
+        if (typeof onRestart === 'function') {
+          onRestart();
+        } else {
+          const restartActionBtn = document.querySelector('[data-action="restart"]');
+          if (restartActionBtn) {
+            restartActionBtn.click();
+          } else {
+            window.location.reload();
+          }
         }
-      }, 1200);
+      });
     } else {
       message.className = 'form-message text-rose-400';
-      message.textContent = `❌ Ошибка: ${res.error || 'Не удалось отправить форму'}`;
+      message.textContent = `❌ Ошибка: ${res?.error || 'Не удалось отправить форму'}`;
       submitButton.disabled = false;
       submitButton.textContent = 'Попробовать снова';
     }
